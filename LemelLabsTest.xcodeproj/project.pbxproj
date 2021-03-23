@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
+		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
+		CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* ViewController.swift */; };
+		CBEEC713260A15B400B357D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC711260A15B400B357D9 /* Main.storyboard */; };
+		CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */; };
+		CBEEC718260A15B600B357D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC717260A15B600B357D9 /* Assets.xcassets */; };
+		CBEEC71B260A15B600B357D9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */; };
+		CBEEC726260A15B700B357D9 /* LemelLabsTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC725260A15B700B357D9 /* LemelLabsTestTests.swift */; };
+		CBEEC731260A15B700B357D9 /* LemelLabsTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC730260A15B700B357D9 /* LemelLabsTestUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CBEEC722260A15B700B357D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBEEC700260A15B400B357D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CBEEC707260A15B400B357D9;
+			remoteInfo = LemelLabsTest;
+		};
+		CBEEC72D260A15B700B357D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBEEC700260A15B400B357D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CBEEC707260A15B400B357D9;
+			remoteInfo = LemelLabsTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CBEEC70F260A15B400B357D9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CBEEC712260A15B400B357D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CBEEC715260A15B400B357D9 /* LemelLabsTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LemelLabsTest.xcdatamodel; sourceTree = "<group>"; };
+		CBEEC717260A15B600B357D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CBEEC71A260A15B600B357D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CBEEC71C260A15B600B357D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CBEEC721260A15B700B357D9 /* LemelLabsTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LemelLabsTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBEEC725260A15B700B357D9 /* LemelLabsTestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemelLabsTestTests.swift; sourceTree = "<group>"; };
+		CBEEC727260A15B700B357D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CBEEC72C260A15B700B357D9 /* LemelLabsTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LemelLabsTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBEEC730260A15B700B357D9 /* LemelLabsTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemelLabsTestUITests.swift; sourceTree = "<group>"; };
+		CBEEC732260A15B700B357D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CBEEC705260A15B400B357D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBEEC71E260A15B700B357D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBEEC729260A15B700B357D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CBEEC6FF260A15B400B357D9 = {
+			isa = PBXGroup;
+			children = (
+				CBEEC70A260A15B400B357D9 /* LemelLabsTest */,
+				CBEEC724260A15B700B357D9 /* LemelLabsTestTests */,
+				CBEEC72F260A15B700B357D9 /* LemelLabsTestUITests */,
+				CBEEC709260A15B400B357D9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CBEEC709260A15B400B357D9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC708260A15B400B357D9 /* LemelLabsTest.app */,
+				CBEEC721260A15B700B357D9 /* LemelLabsTestTests.xctest */,
+				CBEEC72C260A15B700B357D9 /* LemelLabsTestUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CBEEC70A260A15B400B357D9 /* LemelLabsTest */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC70B260A15B400B357D9 /* AppDelegate.swift */,
+				CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */,
+				CBEEC70F260A15B400B357D9 /* ViewController.swift */,
+				CBEEC711260A15B400B357D9 /* Main.storyboard */,
+				CBEEC717260A15B600B357D9 /* Assets.xcassets */,
+				CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */,
+				CBEEC71C260A15B600B357D9 /* Info.plist */,
+				CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */,
+			);
+			path = LemelLabsTest;
+			sourceTree = "<group>";
+		};
+		CBEEC724260A15B700B357D9 /* LemelLabsTestTests */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC725260A15B700B357D9 /* LemelLabsTestTests.swift */,
+				CBEEC727260A15B700B357D9 /* Info.plist */,
+			);
+			path = LemelLabsTestTests;
+			sourceTree = "<group>";
+		};
+		CBEEC72F260A15B700B357D9 /* LemelLabsTestUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC730260A15B700B357D9 /* LemelLabsTestUITests.swift */,
+				CBEEC732260A15B700B357D9 /* Info.plist */,
+			);
+			path = LemelLabsTestUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CBEEC707260A15B400B357D9 /* LemelLabsTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBEEC735260A15B700B357D9 /* Build configuration list for PBXNativeTarget "LemelLabsTest" */;
+			buildPhases = (
+				CBEEC704260A15B400B357D9 /* Sources */,
+				CBEEC705260A15B400B357D9 /* Frameworks */,
+				CBEEC706260A15B400B357D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LemelLabsTest;
+			productName = LemelLabsTest;
+			productReference = CBEEC708260A15B400B357D9 /* LemelLabsTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CBEEC720260A15B700B357D9 /* LemelLabsTestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBEEC738260A15B700B357D9 /* Build configuration list for PBXNativeTarget "LemelLabsTestTests" */;
+			buildPhases = (
+				CBEEC71D260A15B700B357D9 /* Sources */,
+				CBEEC71E260A15B700B357D9 /* Frameworks */,
+				CBEEC71F260A15B700B357D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CBEEC723260A15B700B357D9 /* PBXTargetDependency */,
+			);
+			name = LemelLabsTestTests;
+			productName = LemelLabsTestTests;
+			productReference = CBEEC721260A15B700B357D9 /* LemelLabsTestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CBEEC72B260A15B700B357D9 /* LemelLabsTestUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBEEC73B260A15B700B357D9 /* Build configuration list for PBXNativeTarget "LemelLabsTestUITests" */;
+			buildPhases = (
+				CBEEC728260A15B700B357D9 /* Sources */,
+				CBEEC729260A15B700B357D9 /* Frameworks */,
+				CBEEC72A260A15B700B357D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CBEEC72E260A15B700B357D9 /* PBXTargetDependency */,
+			);
+			name = LemelLabsTestUITests;
+			productName = LemelLabsTestUITests;
+			productReference = CBEEC72C260A15B700B357D9 /* LemelLabsTestUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CBEEC700260A15B400B357D9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					CBEEC707260A15B400B357D9 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					CBEEC720260A15B700B357D9 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = CBEEC707260A15B400B357D9;
+					};
+					CBEEC72B260A15B700B357D9 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = CBEEC707260A15B400B357D9;
+					};
+				};
+			};
+			buildConfigurationList = CBEEC703260A15B400B357D9 /* Build configuration list for PBXProject "LemelLabsTest" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CBEEC6FF260A15B400B357D9;
+			productRefGroup = CBEEC709260A15B400B357D9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CBEEC707260A15B400B357D9 /* LemelLabsTest */,
+				CBEEC720260A15B700B357D9 /* LemelLabsTestTests */,
+				CBEEC72B260A15B700B357D9 /* LemelLabsTestUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CBEEC706260A15B400B357D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBEEC71B260A15B600B357D9 /* LaunchScreen.storyboard in Resources */,
+				CBEEC718260A15B600B357D9 /* Assets.xcassets in Resources */,
+				CBEEC713260A15B400B357D9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBEEC71F260A15B700B357D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBEEC72A260A15B700B357D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CBEEC704260A15B400B357D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */,
+				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
+				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,
+				CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBEEC71D260A15B700B357D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBEEC726260A15B700B357D9 /* LemelLabsTestTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBEEC728260A15B700B357D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBEEC731260A15B700B357D9 /* LemelLabsTestUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CBEEC723260A15B700B357D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CBEEC707260A15B400B357D9 /* LemelLabsTest */;
+			targetProxy = CBEEC722260A15B700B357D9 /* PBXContainerItemProxy */;
+		};
+		CBEEC72E260A15B700B357D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CBEEC707260A15B400B357D9 /* LemelLabsTest */;
+			targetProxy = CBEEC72D260A15B700B357D9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CBEEC711260A15B400B357D9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBEEC712260A15B400B357D9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBEEC71A260A15B600B357D9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CBEEC733260A15B700B357D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CBEEC734260A15B700B357D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CBEEC736260A15B700B357D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NWU3UR5FK7;
+				INFOPLIST_FILE = LemelLabsTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CBEEC737260A15B700B357D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NWU3UR5FK7;
+				INFOPLIST_FILE = LemelLabsTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CBEEC739260A15B700B357D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NWU3UR5FK7;
+				INFOPLIST_FILE = LemelLabsTestTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTestTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LemelLabsTest.app/LemelLabsTest";
+			};
+			name = Debug;
+		};
+		CBEEC73A260A15B700B357D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NWU3UR5FK7;
+				INFOPLIST_FILE = LemelLabsTestTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTestTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LemelLabsTest.app/LemelLabsTest";
+			};
+			name = Release;
+		};
+		CBEEC73C260A15B700B357D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NWU3UR5FK7;
+				INFOPLIST_FILE = LemelLabsTestUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTestUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LemelLabsTest;
+			};
+			name = Debug;
+		};
+		CBEEC73D260A15B700B357D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NWU3UR5FK7;
+				INFOPLIST_FILE = LemelLabsTestUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTestUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LemelLabsTest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CBEEC703260A15B400B357D9 /* Build configuration list for PBXProject "LemelLabsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBEEC733260A15B700B357D9 /* Debug */,
+				CBEEC734260A15B700B357D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBEEC735260A15B700B357D9 /* Build configuration list for PBXNativeTarget "LemelLabsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBEEC736260A15B700B357D9 /* Debug */,
+				CBEEC737260A15B700B357D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBEEC738260A15B700B357D9 /* Build configuration list for PBXNativeTarget "LemelLabsTestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBEEC739260A15B700B357D9 /* Debug */,
+				CBEEC73A260A15B700B357D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBEEC73B260A15B700B357D9 /* Build configuration list for PBXNativeTarget "LemelLabsTestUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBEEC73C260A15B700B357D9 /* Debug */,
+				CBEEC73D260A15B700B357D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CBEEC715260A15B400B357D9 /* LemelLabsTest.xcdatamodel */,
+			);
+			currentVersion = CBEEC715260A15B400B357D9 /* LemelLabsTest.xcdatamodel */;
+			path = LemelLabsTest.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = CBEEC700260A15B400B357D9 /* Project object */;
+}
