@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB5F1764260D2357007CD78E /* MessageMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F175E260D2357007CD78E /* MessageMO+CoreDataClass.swift */; };
+		CB5F1765260D2357007CD78E /* MessageMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F175F260D2357007CD78E /* MessageMO+CoreDataProperties.swift */; };
+		CB5F1766260D2357007CD78E /* ChatMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F1760260D2357007CD78E /* ChatMO+CoreDataClass.swift */; };
+		CB5F1767260D2357007CD78E /* ChatMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F1761260D2357007CD78E /* ChatMO+CoreDataProperties.swift */; };
+		CB5F1768260D2357007CD78E /* UserMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F1762260D2357007CD78E /* UserMO+CoreDataClass.swift */; };
+		CB5F1769260D2357007CD78E /* UserMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F1763260D2357007CD78E /* UserMO+CoreDataProperties.swift */; };
+		CB5F176E260D24B0007CD78E /* UsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F176D260D24B0007CD78E /* UsersController.swift */; };
+		CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatController.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
 		CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* ViewController.swift */; };
@@ -36,6 +44,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB5F175E260D2357007CD78E /* MessageMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		CB5F175F260D2357007CD78E /* MessageMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		CB5F1760260D2357007CD78E /* ChatMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		CB5F1761260D2357007CD78E /* ChatMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		CB5F1762260D2357007CD78E /* UserMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		CB5F1763260D2357007CD78E /* UserMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		CB5F176D260D24B0007CD78E /* UsersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersController.swift; sourceTree = "<group>"; };
+		CB5FEAF2260CA91F00871971 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +94,57 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB5F1721260D2215007CD78E /* CoreDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				CB5F175E260D2357007CD78E /* MessageMO+CoreDataClass.swift */,
+				CB5F175F260D2357007CD78E /* MessageMO+CoreDataProperties.swift */,
+				CB5F1760260D2357007CD78E /* ChatMO+CoreDataClass.swift */,
+				CB5F1761260D2357007CD78E /* ChatMO+CoreDataProperties.swift */,
+				CB5F1762260D2357007CD78E /* UserMO+CoreDataClass.swift */,
+				CB5F1763260D2357007CD78E /* UserMO+CoreDataProperties.swift */,
+			);
+			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
+		CBAA05A8260B5800009CDEB7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		CBAA05A9260B581B009CDEB7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC71C260A15B600B357D9 /* Info.plist */,
+				CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */,
+				CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */,
+				CBEEC717260A15B600B357D9 /* Assets.xcassets */,
+				CBEEC711260A15B400B357D9 /* Main.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CBAA05AA260B582B009CDEB7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC70F260A15B400B357D9 /* ViewController.swift */,
+				CB5FEAF2260CA91F00871971 /* ChatController.swift */,
+				CB5F176D260D24B0007CD78E /* UsersController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		CBAA05AB260B5836009CDEB7 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEC70B260A15B400B357D9 /* AppDelegate.swift */,
+				CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		CBEEC6FF260A15B400B357D9 = {
 			isa = PBXGroup;
 			children = (
@@ -101,14 +168,11 @@
 		CBEEC70A260A15B400B357D9 /* LemelLabsTest */ = {
 			isa = PBXGroup;
 			children = (
-				CBEEC70B260A15B400B357D9 /* AppDelegate.swift */,
-				CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */,
-				CBEEC70F260A15B400B357D9 /* ViewController.swift */,
-				CBEEC711260A15B400B357D9 /* Main.storyboard */,
-				CBEEC717260A15B600B357D9 /* Assets.xcassets */,
-				CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */,
-				CBEEC71C260A15B600B357D9 /* Info.plist */,
-				CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */,
+				CB5F1721260D2215007CD78E /* CoreDataModels */,
+				CBAA05AB260B5836009CDEB7 /* Delegates */,
+				CBAA05AA260B582B009CDEB7 /* Controllers */,
+				CBAA05A9260B581B009CDEB7 /* Supporting Files */,
+				CBAA05A8260B5800009CDEB7 /* Utils */,
 			);
 			path = LemelLabsTest;
 			sourceTree = "<group>";
@@ -264,7 +328,15 @@
 				CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */,
 				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
 				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,
+				CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */,
+				CB5F1769260D2357007CD78E /* UserMO+CoreDataProperties.swift in Sources */,
+				CB5F1765260D2357007CD78E /* MessageMO+CoreDataProperties.swift in Sources */,
+				CB5F1766260D2357007CD78E /* ChatMO+CoreDataClass.swift in Sources */,
+				CB5F1767260D2357007CD78E /* ChatMO+CoreDataProperties.swift in Sources */,
 				CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */,
+				CB5F1768260D2357007CD78E /* UserMO+CoreDataClass.swift in Sources */,
+				CB5F1764260D2357007CD78E /* MessageMO+CoreDataClass.swift in Sources */,
+				CB5F176E260D24B0007CD78E /* UsersController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +442,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -425,7 +497,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -441,13 +513,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NWU3UR5FK7;
-				INFOPLIST_FILE = LemelLabsTest/Info.plist;
+				DEVELOPMENT_TEAM = J8XC47J4S3;
+				INFOPLIST_FILE = "$(SRCROOT)/LemelLabsTest/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTest";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTest2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -460,13 +532,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NWU3UR5FK7;
-				INFOPLIST_FILE = LemelLabsTest/Info.plist;
+				DEVELOPMENT_TEAM = J8XC47J4S3;
+				INFOPLIST_FILE = "$(SRCROOT)/LemelLabsTest/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTest";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yakubets-v.LemelLabsTest2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
