@@ -2,7 +2,7 @@
 //  UserMO+CoreDataProperties.swift
 //  LemelLabsTest
 //
-//  Created by Vladislav Yakubets on 26.03.21.
+//  Created by Vladislav Yakubets on 29.03.21.
 //
 //
 
@@ -18,25 +18,8 @@ extension UserMO {
 
     @NSManaged public var userID: Int32
     @NSManaged public var userName: String?
-    @NSManaged public var chats: NSSet?
     @NSManaged public var messages: NSSet?
-
-}
-
-// MARK: Generated accessors for chats
-extension UserMO {
-
-    @objc(addChatsObject:)
-    @NSManaged public func addToChats(_ value: ChatMO)
-
-    @objc(removeChatsObject:)
-    @NSManaged public func removeFromChats(_ value: ChatMO)
-
-    @objc(addChats:)
-    @NSManaged public func addToChats(_ values: NSSet)
-
-    @objc(removeChats:)
-    @NSManaged public func removeFromChats(_ values: NSSet)
+    @NSManaged public var chats: NSSet?
 
 }
 
@@ -57,6 +40,19 @@ extension UserMO {
 
 }
 
-extension UserMO : Identifiable {
+// MARK: Generated accessors for chats
+extension UserMO {
+
+    @objc(addChatsObject:)
+    @NSManaged public func addToChats(_ value: ChatMO)
+
+    @objc(removeChatsObject:)
+    @NSManaged public func removeFromChats(_ value: ChatMO)
+
+    @objc(addChats:)
+    @NSManaged public func addToChats(_ values: NSSet)
+
+    @objc(removeChats:)
+    @NSManaged public func removeFromChats(_ values: NSSet)
 
 }

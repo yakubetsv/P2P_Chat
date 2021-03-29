@@ -22,8 +22,8 @@
 	<true/>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_hws-kb._tcp</string>
 		<string>_hws-kb._udp</string>
+		<string>_hws-kb._tcp</string>
 	</array>
 	<key>NSLocationUsageDescription</key>
 	<string>Hi</string>

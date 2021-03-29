@@ -9,15 +9,14 @@ import UIKit
 import MultipeerConnectivity
 import CoreData
 
-class ViewController: UIViewController, MCNearbyServiceAdvertiserDelegate {
+class ViewController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var peerID: MCPeerID!
-    var mcSession: MCSession!
     var isAdvertising = false
-    var mcAdvertisingAssistent: MCAdvertiserAssistant!
-    var mcNearbyServiceAdvertiser: MCNearbyServiceAdvertiser!
     var user: UserMO!
-    var userForChat: UserMO!
+    var secondUser: UserMO!
+    var session: NetworkSession!
+    var browser: ChatBrowser!
     
     let hostSessionButton: UIButton = {
         let button = UIButton(type: .system)
@@ -35,27 +34,16 @@ class ViewController: UIViewController, MCNearbyServiceAdvertiserDelegate {
         return button
     }()
     
-    let openChatsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Opent chats", for: .normal)
-        button.addTarget(self, action: #selector(handleOpenChats), for: .touchUpInside)
-        return button
-    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         peerID = MCPeerID(displayName: UIDevice.current.name)
-        
-        mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .none)
-        mcSession.delegate = self
         
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         configureHostButtonConstraints()
         configureJoinButtonConstraints()
-        configureOpentChatsButton()
         
         user = fetchUser(peerID: peerID)
         print("Current User: \(user.userName!)")
@@ -63,32 +51,27 @@ class ViewController: UIViewController, MCNearbyServiceAdvertiserDelegate {
     
     
     @objc func startHost() {
-        mcNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: "hws-kb")
-        mcNearbyServiceAdvertiser.delegate = self
-        
-        if isAdvertising {
-            mcNearbyServiceAdvertiser.stopAdvertisingPeer()
-            isAdvertising = false
-            print("Adretising is stopped.")
-            hostSessionButton.setTitle("Host", for: .normal)
-        } else {
-            mcNearbyServiceAdvertiser.startAdvertisingPeer()
-            isAdvertising = true
-            print("Start advertising...")
-            hostSessionButton.setTitle("Stop Host", for: .normal)
-        }
+        session = NetworkSession(myself: peerID, isServer: true, host: peerID)
+        session.delegate = self
+        session.startAdvertising()
     }
     
     @objc func joinHost() {
-        let browserVC = MCBrowserViewController(serviceType: "hws-kb", session: mcSession)
-        browserVC.delegate = self
-        navigationController?.pushViewController(browserVC, animated: true)
+        let nearbyDevicesVC = NearbyUsersController()
+        nearbyDevicesVC.peerID = peerID
+        nearbyDevicesVC.complition = { (session: NetworkSession) in
+            DispatchQueue.main.async {
+                let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+                chatVC.session = session
+                nearbyDevicesVC.dismiss(animated: true, completion: nil)
+                self.navigationController?.pushViewController(chatVC, animated: true)
+            }
+        }
+        present(nearbyDevicesVC, animated: true, completion: nil)
     }
     
     @objc func handleOpenChats() {
-        let usersVC = UsersController(style: .grouped)
-        usersVC.user = user
-        navigationController?.pushViewController(usersVC, animated: true)
+        
     }
     
     func configureHostButtonConstraints() {
@@ -106,92 +89,47 @@ class ViewController: UIViewController, MCNearbyServiceAdvertiserDelegate {
         joinSessionButton.widthAnchor.constraint(equalTo: hostSessionButton.widthAnchor).isActive = true
         joinSessionButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
-    
-    func configureOpentChatsButton() {
-        view.addSubview(openChatsButton)
-        openChatsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        openChatsButton.topAnchor.constraint(equalTo: joinSessionButton.bottomAnchor).isActive = true
-        openChatsButton.widthAnchor.constraint(equalTo: joinSessionButton.widthAnchor).isActive = true
-        openChatsButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        
-        print("Invite from \(peerID.displayName)")
-        
-        if let context = context {
-            print(String(data: context, encoding: .utf8) ?? "nil")
-        }
-        
-        let title = "Accept \(peerID.displayName) chat."
-        let message = "Would you like to accept: \(peerID.displayName)"
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (_) in
-            invitationHandler(false, self.mcSession)
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [unowned self] (_) in
-            invitationHandler(true, self.mcSession)
-        }))
-        
-        present(alert, animated: true, completion: nil)
-    }
 }
 
-//MARK: - MCSessionDelegate methods
-extension ViewController: MCSessionDelegate {
-    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        switch state {
-            case .connected:
-                print("\(peerID.displayName) connected to session!")
-                
-                DispatchQueue.main.async { [unowned self] in
-                    self.userForChat = self.fetchUser(peerID: peerID)
-                    
-                    let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
-                    chatVC.mcSession = self.mcSession
-                    let _ = self.fetchChatForUsers(firstUser: self.user, secondUser: self.userForChat)
-                    self.navigationController?.pushViewController(chatVC, animated: true)
-                }
-            case .connecting:
-                print("\(peerID.displayName) is connecting!")
-            case .notConnected:
-                print("\(peerID.displayName) is not connected!")
-            default:
-                fatalError("Connection state error")
+extension ViewController: NetworkSessionDelegate {
+    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType) {
+        
+    }
+    
+    func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool) -> ())) {
+        
+        DispatchQueue.main.async {
+            let title = "Invite from \(peer.displayName)"
+            let message = "Accept invite from \(peer.displayName)"
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (_) in
+                complition(true)
+            }))
+            alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (_) in
+                complition(false)
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
-    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+    func networkSession(_ session: NetworkSession, received data: Data, fromPeerID: MCPeerID) {
         
     }
     
-    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+    func networkSession(_ session: NetworkSession, joined: MCPeerID) {
+        session.stopAdvertising()
+        
+        DispatchQueue.main.async {
+            let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+            chatVC.session = session
+            self.navigationController?.pushViewController(chatVC, animated: true)
+        }
         
     }
-    
-    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        
-    }
-    
-    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-        
-    }
-    
-    
 }
 
-//MARK: - MCBrowserViewControllerDelegate
-extension ViewController: MCBrowserViewControllerDelegate {
-    func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
-        
-    }
-    
-    func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
-        dismiss(animated: true, completion: nil)
-    }
-}
 
 //MARK: -CoreDataMethods
 extension ViewController {

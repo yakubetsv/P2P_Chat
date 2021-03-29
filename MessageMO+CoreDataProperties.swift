@@ -2,7 +2,7 @@
 //  MessageMO+CoreDataProperties.swift
 //  LemelLabsTest
 //
-//  Created by Vladislav Yakubets on 26.03.21.
+//  Created by Vladislav Yakubets on 29.03.21.
 //
 //
 
@@ -17,13 +17,10 @@ extension MessageMO {
     }
 
     @NSManaged public var dateStamp: Date?
-    @NSManaged public var messageID: Int32
-    @NSManaged public var text: String?
+    @NSManaged public var messageID: Int16
+    @NSManaged public var data: Data?
+    @NSManaged public var type: Int16
     @NSManaged public var chat: ChatMO?
     @NSManaged public var user: UserMO?
-
-}
-
-extension MessageMO : Identifiable {
 
 }
