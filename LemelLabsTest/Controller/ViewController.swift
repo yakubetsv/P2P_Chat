@@ -14,7 +14,6 @@ class ViewController: UIViewController {
     var peerID: MCPeerID!
     var isAdvertising = false
     var user: UserMO!
-    var secondUser: UserMO!
     var session: NetworkSession!
     var browser: ChatBrowser!
     
@@ -121,6 +120,7 @@ extension ViewController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, joined: MCPeerID) {
         session.stopAdvertising()
         
+        
         DispatchQueue.main.async {
             let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
             chatVC.session = session
@@ -134,15 +134,16 @@ extension ViewController: NetworkSessionDelegate {
 //MARK: -CoreDataMethods
 extension ViewController {
     
-    func fetchUser(peerID: MCPeerID) -> UserMO {
+    func fetchUser(peerID: MCPeerID) -> UserMO? {
         let fetchRequst = NSFetchRequest<UserMO>(entityName: "User")
         fetchRequst.predicate = NSPredicate.init(format: "userName == %@", peerID.displayName)
         
         do {
-            let users = try appDelegate.persistentContainer.viewContext.fetch(fetchRequst)
+            let users = try CoreDataManager.shared.persistentContainer.viewContext.fetch(fetchRequst)
             
             if users.isEmpty {
-                return createUser(peerID: peerID)
+                guard let newUser = createUser(peerID: peerID) else { return nil}
+                return newUser
             }
             
             print("User: \(peerID.displayName) alreadry created.")
@@ -152,16 +153,16 @@ extension ViewController {
         }
     }
     
-    func createUser(peerID: MCPeerID) -> UserMO {
+    func createUser(peerID: MCPeerID) -> UserMO? {
         
-        let entityDesc = NSEntityDescription.entity(forEntityName: "User", in: appDelegate.persistentContainer.viewContext)
-        let entityModel = UserMO(entity: entityDesc!, insertInto: appDelegate.persistentContainer.viewContext)
+        guard let entityDesc = NSEntityDescription.entity(forEntityName: "User", in: CoreDataManager.shared.persistentContainer.viewContext) else { return nil }
+        let entityModel = UserMO(entity: entityDesc, insertInto: CoreDataManager.shared.persistentContainer.viewContext)
         
         entityModel.userName = peerID.displayName
         
         print("New user is been created: \(String(describing: entityModel.userName))")
         
-        appDelegate.saveContext()
+        CoreDataManager.shared.saveContext()
         
         return entityModel
     }
@@ -170,7 +171,7 @@ extension ViewController {
         let fetchReques = NSFetchRequest<ChatMO>(entityName: "Chat")
         
         do {
-            let chats = try appDelegate.persistentContainer.viewContext.fetch(fetchReques)
+            let chats = try CoreDataManager.shared.persistentContainer.viewContext.fetch(fetchReques)
             
             for chat in chats {
                 if chat.users!.contains(firstUser) && chat.users!.contains(secondUser) {
@@ -185,15 +186,15 @@ extension ViewController {
     }
     
     func createChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO {
-        let entityDesc = NSEntityDescription.entity(forEntityName: "Chat", in: appDelegate.persistentContainer.viewContext)
-        let chatModel = ChatMO(entity: entityDesc!, insertInto: appDelegate.persistentContainer.viewContext)
+        let entityDesc = NSEntityDescription.entity(forEntityName: "Chat", in: CoreDataManager.shared.persistentContainer.viewContext)
+        let chatModel = ChatMO(entity: entityDesc!, insertInto: CoreDataManager.shared.persistentContainer.viewContext)
         
         firstUser.addToChats(chatModel)
         secondUser.addToChats(chatModel)
         
         chatModel.addToUsers([firstUser, secondUser])
         
-        appDelegate.saveContext()
+        CoreDataManager.shared.saveContext()
         print("Chat for \(firstUser.userName!) and \(secondUser.userName!) was created!")
         
         return chatModel

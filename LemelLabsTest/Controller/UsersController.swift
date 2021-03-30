@@ -53,7 +53,7 @@ class UsersController: UITableViewController {
         let fetchRequest = NSFetchRequest<ChatMO>(entityName: "Chat")
         
         do {
-            chats = try appDelegate.persistentContainer.viewContext.fetch(fetchRequest)
+            chats = try CoreDataManager.shared.persistentContainer.viewContext.fetch(fetchRequest)
         } catch  {
             fatalError(error.localizedDescription)
         }

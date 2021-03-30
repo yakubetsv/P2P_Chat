@@ -21,6 +21,7 @@
 		CB58CC0D26121AE400171501 /* MessageMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0726121AE400171501 /* MessageMO+CoreDataProperties.swift */; };
 		CB5F176E260D24B0007CD78E /* UsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F176D260D24B0007CD78E /* UsersController.swift */; };
 		CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatController.swift */; };
+		CBE8E73C2613115C000166BB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E73B2613115C000166BB /* CoreDataManager.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
 		CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* ViewController.swift */; };
@@ -64,6 +65,7 @@
 		CB58CC0726121AE400171501 /* MessageMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		CB5F176D260D24B0007CD78E /* UsersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersController.swift; sourceTree = "<group>"; };
 		CB5FEAF2260CA91F00871971 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
+		CBE8E73B2613115C000166BB /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -156,7 +158,7 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CBAA05AA260B582B009CDEB7 /* Controllers */ = {
+		CBAA05AA260B582B009CDEB7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				CBEEC70F260A15B400B357D9 /* ViewController.swift */,
@@ -164,7 +166,7 @@
 				CB5F176D260D24B0007CD78E /* UsersController.swift */,
 				CB3C909A2610DB8000AACE3A /* NearbyUsersController.swift */,
 			);
-			path = Controllers;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		CBAA05AB260B5836009CDEB7 /* Delegates */ = {
@@ -174,6 +176,14 @@
 				CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */,
 			);
 			path = Delegates;
+			sourceTree = "<group>";
+		};
+		CBE8E73726130E2A000166BB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		CBEEC6FF260A15B400B357D9 = {
@@ -199,14 +209,15 @@
 		CBEEC70A260A15B400B357D9 /* LemelLabsTest */ = {
 			isa = PBXGroup;
 			children = (
-				CB3C90A52610F5FA00AACE3A /* Local Networking */,
+				CBE8E73726130E2A000166BB /* Model */,
+				CBAA05AA260B582B009CDEB7 /* Controller */,
 				CB042224260E21BB0076561C /* View */,
 				CB5F1721260D2215007CD78E /* CoreDataModels */,
+				CB3C90A52610F5FA00AACE3A /* Local Networking */,
 				CBAA05AB260B5836009CDEB7 /* Delegates */,
-				CBAA05AA260B582B009CDEB7 /* Controllers */,
 				CBAA05A9260B581B009CDEB7 /* Supporting Files */,
 				CBAA05A8260B5800009CDEB7 /* Utils */,
-				CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */,
+				CBE8E73B2613115C000166BB /* CoreDataManager.swift */,
 			);
 			path = LemelLabsTest;
 			sourceTree = "<group>";
@@ -362,6 +373,7 @@
 				CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */,
 				CB58CC0C26121AE400171501 /* MessageMO+CoreDataClass.swift in Sources */,
 				CB58CC0B26121AE400171501 /* ChatMO+CoreDataProperties.swift in Sources */,
+				CBE8E73C2613115C000166BB /* CoreDataManager.swift in Sources */,
 				CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */,
 				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
 				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,
