@@ -230,13 +230,14 @@ class ChatController: UICollectionViewController {
             case UIGestureRecognizer.State.began:
                 collectionView.bringSubviewToFront(cell)
                 UIView.animate(withDuration: 0.25) {
-                    cell.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+                    
+                    cell.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+                    
                 }
-            default:
+            case UIGestureRecognizer.State.ended:
                 UIView.animate(withDuration: 0.25) {
                     cell.transform = .identity
                     }
-                gesture.state = .ended
                 
                 guard let messages = messages, let data = messages[indexPath.item].data else { return }
                 
@@ -247,10 +248,11 @@ class ChatController: UICollectionViewController {
                 sendButton.removeTarget(self, action: #selector(sendButtonPressed), for: .allEvents)
                 sendButton.setTitle("Edit", for: .normal)
                 sendButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
+            default:
+                break
+                
+                
         }
-//        if gesture.state != .ended {
-//            return
-//        }
     }
 }
 
@@ -297,7 +299,8 @@ extension ChatController: NetworkSessionDelegate {
             case .Text:
                 switch command {
                     case .Create:
-                        let message = MessageMO(chat: chat, user: secondUser, date: Date(), data: data)
+                        
+                        let message = MessageMO(context: UIApplication.shared.delegate as? AppDelegate)
                         CoreDataManager.shared.saveContext()
         
                         print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")

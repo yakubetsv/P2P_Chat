@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Chat" representedClassName="ChatMO" syncable="YES">
+    <entity name="Chat" representedClassName="ChatMO" syncable="YES" codeGenerationType="class">
         <attribute name="chatID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="chat" inverseEntity="Message"/>
         <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="chats" inverseEntity="User"/>
     </entity>
-    <entity name="Message" representedClassName="MessageMO" syncable="YES">
+    <entity name="Message" representedClassName="MessageMO" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Binary"/>
         <attribute name="dateStamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="messageID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -13,7 +13,7 @@
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="messages" inverseEntity="Chat"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User"/>
     </entity>
-    <entity name="User" representedClassName="UserMO" syncable="YES">
+    <entity name="User" representedClassName="UserMO" syncable="YES" codeGenerationType="class">
         <attribute name="userID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userName" optional="YES" attributeType="String"/>
         <relationship name="chats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Chat" inverseName="users" inverseEntity="Chat"/>
