@@ -2,7 +2,7 @@
 //  MessageMO+CoreDataProperties.swift
 //  LemelLabsTest
 //
-//  Created by Vladislav Yakubets on 29.03.21.
+//  Created by Vladislav Yakubets on 30.03.21.
 //
 //
 
@@ -16,11 +16,11 @@ extension MessageMO {
         return NSFetchRequest<MessageMO>(entityName: "Message")
     }
 
+    @NSManaged public var data: Data?
     @NSManaged public var dateStamp: Date?
     @NSManaged public var messageID: Int16
-    @NSManaged public var data: Data?
     @NSManaged public var type: Int16
     @NSManaged public var chat: ChatMO?
     @NSManaged public var user: UserMO?
-
+    
 }

@@ -1,7 +1,4 @@
 //
-//  NetworkSession.swift
-//  LemelLabsTest
-//
 //  Created by Vladislav Yakubets on 29.03.21.
 //
 
@@ -22,6 +19,7 @@ protocol NetworkSessionDelegate: class {
     func networkSession(_ session: NetworkSession, joined: MCPeerID)
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool)->()))
     func networkSession(_ session: NetworkSession, received data: Data, type: ContentType)
+    func networkSession(_ stop: NetworkSession)
 }
 
 class NetworkSession: NSObject {
@@ -45,6 +43,10 @@ class NetworkSession: NSObject {
         super.init()
         
         self.session.delegate = self
+    }
+    
+    deinit {
+        print("Network Session is dead")
     }
     
     func startAdvertising() {
@@ -98,8 +100,6 @@ class NetworkSession: NSObject {
                     }
                 }
         }
-        
-        
     }
     
     func sendImage() {
@@ -109,10 +109,6 @@ class NetworkSession: NSObject {
     func stopSession() {
         session.disconnect()
     }
-    
-//    func receive(data: Data, fromPeer: MCPeerID) {
-//        delegate?.networkSession(self, received: data, fromPeerID: fromPeer)
-//    }
 }
 
 extension NetworkSession: MCSessionDelegate {
@@ -126,6 +122,7 @@ extension NetworkSession: MCSessionDelegate {
             case .connecting:
                 print("\(peerID.displayName) is connecting")
             case .notConnected:
+                delegate?.networkSession(self)
                 print("\(peerID.displayName) is not connected.")
             @unknown default:
                 fatalError("")
@@ -163,13 +160,7 @@ extension NetworkSession: MCSessionDelegate {
         } catch {
             print(error.localizedDescription)
         }
-        
-        
     }
-}
-
-extension NetworkSession: MCAdvertiserAssistantDelegate {
-    
 }
 
 //MARK: -MCNearbyServiceAdvertiser

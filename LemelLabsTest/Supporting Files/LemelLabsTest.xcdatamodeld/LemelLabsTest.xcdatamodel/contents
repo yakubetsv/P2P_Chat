@@ -20,8 +20,8 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="user" inverseEntity="Message"/>
     </entity>
     <elements>
-        <element name="Chat" positionX="-34.3248291015625" positionY="399.1498107910156" width="128" height="88"/>
-        <element name="Message" positionX="-455.961669921875" positionY="393.7963256835938" width="128" height="133"/>
-        <element name="User" positionX="-261.104248046875" positionY="561.9723205566406" width="128" height="103"/>
+        <element name="Chat" positionX="-34.3248291015625" positionY="399.1498107910156" width="128" height="74"/>
+        <element name="Message" positionX="-455.961669921875" positionY="393.7963256835938" width="128" height="119"/>
+        <element name="User" positionX="-261.104248046875" positionY="561.9723205566406" width="128" height="89"/>
     </elements>
 </model>

@@ -2,7 +2,7 @@
 //  UserMO+CoreDataClass.swift
 //  LemelLabsTest
 //
-//  Created by Vladislav Yakubets on 29.03.21.
+//  Created by Vladislav Yakubets on 30.03.21.
 //
 //
 

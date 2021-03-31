@@ -84,6 +84,10 @@ extension NearbyUsersController: UITableViewDelegate {
 }
 
 extension NearbyUsersController: NetworkSessionDelegate {
+    func networkSession(_ stop: NetworkSession) {
+        
+    }
+    
     func networkSession(_ session: NetworkSession, received data: Data, type: ContentType) {
         
     }

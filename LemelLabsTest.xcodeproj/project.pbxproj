@@ -13,15 +13,14 @@
 		CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */; };
 		CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */; };
 		CB3C90B42611C22C00AACE3A /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90B32611C22C00AACE3A /* Comments.swift */; };
-		CB58CC0826121AE400171501 /* UserMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0226121AE400171501 /* UserMO+CoreDataClass.swift */; };
-		CB58CC0926121AE400171501 /* UserMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0326121AE400171501 /* UserMO+CoreDataProperties.swift */; };
-		CB58CC0A26121AE400171501 /* ChatMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0426121AE400171501 /* ChatMO+CoreDataClass.swift */; };
-		CB58CC0B26121AE400171501 /* ChatMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0526121AE400171501 /* ChatMO+CoreDataProperties.swift */; };
-		CB58CC0C26121AE400171501 /* MessageMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0626121AE400171501 /* MessageMO+CoreDataClass.swift */; };
-		CB58CC0D26121AE400171501 /* MessageMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58CC0726121AE400171501 /* MessageMO+CoreDataProperties.swift */; };
-		CB5F176E260D24B0007CD78E /* UsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F176D260D24B0007CD78E /* UsersController.swift */; };
 		CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatController.swift */; };
 		CBE8E73C2613115C000166BB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E73B2613115C000166BB /* CoreDataManager.swift */; };
+		CBE8E75B2613169F000166BB /* UserMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E7552613169F000166BB /* UserMO+CoreDataClass.swift */; };
+		CBE8E75C2613169F000166BB /* UserMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E7562613169F000166BB /* UserMO+CoreDataProperties.swift */; };
+		CBE8E75D2613169F000166BB /* ChatMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E7572613169F000166BB /* ChatMO+CoreDataClass.swift */; };
+		CBE8E75E2613169F000166BB /* ChatMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E7582613169F000166BB /* ChatMO+CoreDataProperties.swift */; };
+		CBE8E75F2613169F000166BB /* MessageMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E7592613169F000166BB /* MessageMO+CoreDataClass.swift */; };
+		CBE8E7602613169F000166BB /* MessageMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E75A2613169F000166BB /* MessageMO+CoreDataProperties.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
 		CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* ViewController.swift */; };
@@ -57,15 +56,14 @@
 		CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBrowser.swift; sourceTree = "<group>"; };
 		CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		CB3C90B32611C22C00AACE3A /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
-		CB58CC0226121AE400171501 /* UserMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		CB58CC0326121AE400171501 /* UserMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		CB58CC0426121AE400171501 /* ChatMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		CB58CC0526121AE400171501 /* ChatMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		CB58CC0626121AE400171501 /* MessageMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		CB58CC0726121AE400171501 /* MessageMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		CB5F176D260D24B0007CD78E /* UsersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersController.swift; sourceTree = "<group>"; };
 		CB5FEAF2260CA91F00871971 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		CBE8E73B2613115C000166BB /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		CBE8E7552613169F000166BB /* UserMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		CBE8E7562613169F000166BB /* UserMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		CBE8E7572613169F000166BB /* ChatMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		CBE8E7582613169F000166BB /* ChatMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		CBE8E7592613169F000166BB /* MessageMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		CBE8E75A2613169F000166BB /* MessageMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageMO+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,12 +126,12 @@
 		CB5F1721260D2215007CD78E /* CoreDataModels */ = {
 			isa = PBXGroup;
 			children = (
-				CB58CC0226121AE400171501 /* UserMO+CoreDataClass.swift */,
-				CB58CC0326121AE400171501 /* UserMO+CoreDataProperties.swift */,
-				CB58CC0426121AE400171501 /* ChatMO+CoreDataClass.swift */,
-				CB58CC0526121AE400171501 /* ChatMO+CoreDataProperties.swift */,
-				CB58CC0626121AE400171501 /* MessageMO+CoreDataClass.swift */,
-				CB58CC0726121AE400171501 /* MessageMO+CoreDataProperties.swift */,
+				CBE8E7552613169F000166BB /* UserMO+CoreDataClass.swift */,
+				CBE8E7562613169F000166BB /* UserMO+CoreDataProperties.swift */,
+				CBE8E7572613169F000166BB /* ChatMO+CoreDataClass.swift */,
+				CBE8E7582613169F000166BB /* ChatMO+CoreDataProperties.swift */,
+				CBE8E7592613169F000166BB /* MessageMO+CoreDataClass.swift */,
+				CBE8E75A2613169F000166BB /* MessageMO+CoreDataProperties.swift */,
 			);
 			path = CoreDataModels;
 			sourceTree = "<group>";
@@ -163,7 +161,6 @@
 			children = (
 				CBEEC70F260A15B400B357D9 /* ViewController.swift */,
 				CB5FEAF2260CA91F00871971 /* ChatController.swift */,
-				CB5F176D260D24B0007CD78E /* UsersController.swift */,
 				CB3C909A2610DB8000AACE3A /* NearbyUsersController.swift */,
 			);
 			path = Controller;
@@ -210,8 +207,8 @@
 			isa = PBXGroup;
 			children = (
 				CBE8E73726130E2A000166BB /* Model */,
-				CBAA05AA260B582B009CDEB7 /* Controller */,
 				CB042224260E21BB0076561C /* View */,
+				CBAA05AA260B582B009CDEB7 /* Controller */,
 				CB5F1721260D2215007CD78E /* CoreDataModels */,
 				CB3C90A52610F5FA00AACE3A /* Local Networking */,
 				CBAA05AB260B5836009CDEB7 /* Delegates */,
@@ -371,24 +368,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */,
-				CB58CC0C26121AE400171501 /* MessageMO+CoreDataClass.swift in Sources */,
-				CB58CC0B26121AE400171501 /* ChatMO+CoreDataProperties.swift in Sources */,
+				CBE8E75C2613169F000166BB /* UserMO+CoreDataProperties.swift in Sources */,
 				CBE8E73C2613115C000166BB /* CoreDataManager.swift in Sources */,
 				CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */,
 				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
+				CBE8E75D2613169F000166BB /* ChatMO+CoreDataClass.swift in Sources */,
 				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,
 				CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */,
 				CB042226260E22300076561C /* MessageCell.swift in Sources */,
-				CB58CC0826121AE400171501 /* UserMO+CoreDataClass.swift in Sources */,
 				CB3C909B2610DB8000AACE3A /* NearbyUsersController.swift in Sources */,
 				CB3C90B42611C22C00AACE3A /* Comments.swift in Sources */,
 				CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */,
 				CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */,
-				CB58CC0D26121AE400171501 /* MessageMO+CoreDataProperties.swift in Sources */,
 				CB3C90A12610E5A700AACE3A /* NearbyDevise.swift in Sources */,
-				CB58CC0A26121AE400171501 /* ChatMO+CoreDataClass.swift in Sources */,
-				CB58CC0926121AE400171501 /* UserMO+CoreDataProperties.swift in Sources */,
-				CB5F176E260D24B0007CD78E /* UsersController.swift in Sources */,
+				CBE8E75E2613169F000166BB /* ChatMO+CoreDataProperties.swift in Sources */,
+				CBE8E75B2613169F000166BB /* UserMO+CoreDataClass.swift in Sources */,
+				CBE8E7602613169F000166BB /* MessageMO+CoreDataProperties.swift in Sources */,
+				CBE8E75F2613169F000166BB /* MessageMO+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

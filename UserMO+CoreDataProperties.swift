@@ -2,7 +2,7 @@
 //  UserMO+CoreDataProperties.swift
 //  LemelLabsTest
 //
-//  Created by Vladislav Yakubets on 29.03.21.
+//  Created by Vladislav Yakubets on 30.03.21.
 //
 //
 
@@ -18,25 +18,8 @@ extension UserMO {
 
     @NSManaged public var userID: Int32
     @NSManaged public var userName: String?
-    @NSManaged public var messages: NSSet?
     @NSManaged public var chats: NSSet?
-
-}
-
-// MARK: Generated accessors for messages
-extension UserMO {
-
-    @objc(addMessagesObject:)
-    @NSManaged public func addToMessages(_ value: MessageMO)
-
-    @objc(removeMessagesObject:)
-    @NSManaged public func removeFromMessages(_ value: MessageMO)
-
-    @objc(addMessages:)
-    @NSManaged public func addToMessages(_ values: NSSet)
-
-    @objc(removeMessages:)
-    @NSManaged public func removeFromMessages(_ values: NSSet)
+    @NSManaged public var messages: NSSet?
 
 }
 
@@ -54,5 +37,22 @@ extension UserMO {
 
     @objc(removeChats:)
     @NSManaged public func removeFromChats(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for messages
+extension UserMO {
+
+    @objc(addMessagesObject:)
+    @NSManaged public func addToMessages(_ value: MessageMO)
+
+    @objc(removeMessagesObject:)
+    @NSManaged public func removeFromMessages(_ value: MessageMO)
+
+    @objc(addMessages:)
+    @NSManaged public func addToMessages(_ values: NSSet)
+
+    @objc(removeMessages:)
+    @NSManaged public func removeFromMessages(_ values: NSSet)
 
 }

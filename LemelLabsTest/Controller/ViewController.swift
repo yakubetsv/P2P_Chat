@@ -10,7 +10,6 @@ import MultipeerConnectivity
 import CoreData
 
 class ViewController: UIViewController {
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var peerID: MCPeerID!
     var isAdvertising = false
     var user: UserMO!
@@ -40,11 +39,10 @@ class ViewController: UIViewController {
         peerID = MCPeerID(displayName: UIDevice.current.name)
         
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    
+        configureUI()
         
-        configureHostButtonConstraints()
-        configureJoinButtonConstraints()
-        
-        user = fetchUser(peerID: peerID)
+        user = CoreDataManager.shared.fetchUser(peerID: peerID)
         print("Current User: \(user.userName!)")
     }
     
@@ -62,6 +60,7 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
                 chatVC.session = session
+                chatVC.user = self.user
                 nearbyDevicesVC.dismiss(animated: true, completion: nil)
                 self.navigationController?.pushViewController(chatVC, animated: true)
             }
@@ -73,15 +72,13 @@ class ViewController: UIViewController {
         
     }
     
-    func configureHostButtonConstraints() {
+    func configureUI() {
         view.addSubview(hostSessionButton)
         hostSessionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         hostSessionButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         hostSessionButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
         hostSessionButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    func configureJoinButtonConstraints() {
+        
         view.addSubview(joinSessionButton)
         joinSessionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         joinSessionButton.topAnchor.constraint(equalTo: hostSessionButton.bottomAnchor).isActive = true
@@ -91,6 +88,10 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: NetworkSessionDelegate {
+    func networkSession(_ stop: NetworkSession) {
+        
+    }
+    
     func networkSession(_ session: NetworkSession, received data: Data, type: ContentType) {
         
     }
@@ -124,80 +125,10 @@ extension ViewController: NetworkSessionDelegate {
         DispatchQueue.main.async {
             let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
             chatVC.session = session
+            chatVC.user = self.user
             self.navigationController?.pushViewController(chatVC, animated: true)
         }
         
-    }
-}
-
-
-//MARK: -CoreDataMethods
-extension ViewController {
-    
-    func fetchUser(peerID: MCPeerID) -> UserMO? {
-        let fetchRequst = NSFetchRequest<UserMO>(entityName: "User")
-        fetchRequst.predicate = NSPredicate.init(format: "userName == %@", peerID.displayName)
-        
-        do {
-            let users = try CoreDataManager.shared.persistentContainer.viewContext.fetch(fetchRequst)
-            
-            if users.isEmpty {
-                guard let newUser = createUser(peerID: peerID) else { return nil}
-                return newUser
-            }
-            
-            print("User: \(peerID.displayName) alreadry created.")
-            return users[0]
-        } catch {
-            fatalError("\(error)")
-        }
-    }
-    
-    func createUser(peerID: MCPeerID) -> UserMO? {
-        
-        guard let entityDesc = NSEntityDescription.entity(forEntityName: "User", in: CoreDataManager.shared.persistentContainer.viewContext) else { return nil }
-        let entityModel = UserMO(entity: entityDesc, insertInto: CoreDataManager.shared.persistentContainer.viewContext)
-        
-        entityModel.userName = peerID.displayName
-        
-        print("New user is been created: \(String(describing: entityModel.userName))")
-        
-        CoreDataManager.shared.saveContext()
-        
-        return entityModel
-    }
-    
-    func fetchChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO {
-        let fetchReques = NSFetchRequest<ChatMO>(entityName: "Chat")
-        
-        do {
-            let chats = try CoreDataManager.shared.persistentContainer.viewContext.fetch(fetchReques)
-            
-            for chat in chats {
-                if chat.users!.contains(firstUser) && chat.users!.contains(secondUser) {
-                    print("Chat for users \(firstUser.userName!) and \(secondUser.userName!) already created!")
-                    return chat
-                }
-            }
-            return createChatForUsers(firstUser: firstUser, secondUser: secondUser)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-    }
-    
-    func createChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO {
-        let entityDesc = NSEntityDescription.entity(forEntityName: "Chat", in: CoreDataManager.shared.persistentContainer.viewContext)
-        let chatModel = ChatMO(entity: entityDesc!, insertInto: CoreDataManager.shared.persistentContainer.viewContext)
-        
-        firstUser.addToChats(chatModel)
-        secondUser.addToChats(chatModel)
-        
-        chatModel.addToUsers([firstUser, secondUser])
-        
-        CoreDataManager.shared.saveContext()
-        print("Chat for \(firstUser.userName!) and \(secondUser.userName!) was created!")
-        
-        return chatModel
     }
 }
 
