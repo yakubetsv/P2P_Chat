@@ -8,22 +8,8 @@ import MultipeerConnectivity
 
 private let reuseIdentifier = "Cell"
 
-class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class ChatController: UICollectionViewController {
     var containerViewBottomConstraint: NSLayoutConstraint?
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[.originalImage] as! UIImage
-        guard let data = image.pngData() else { return }
-        
-        do {
-            try session.send(data: data, toPeer: session.toPeer, type: .Image)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
     var session: NetworkSession!
     var user: UserMO!
     var secondUser: UserMO! {
@@ -39,6 +25,7 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
             }
         }
     }
+    var changingMessage: MessageMO?
     
     let inputTextField: UITextField = {
         let inputTextFiled = UITextField()
@@ -54,6 +41,12 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
         return view
     }()
     
+    let sendButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,9 +54,14 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.backgroundColor = .white
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressHandler(gesture:)))
+        longPress.minimumPressDuration = 0.5
+        collectionView.addGestureRecognizer(longPress)
         
         session.delegate = self
         
@@ -80,6 +78,7 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
     }
     
     
+    
     func configureUI() {
         view.backgroundColor = .white
         
@@ -94,9 +93,7 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
         containerView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
         containerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        let sendButton = UIButton(type: .system)
         sendButton.setTitle("Send", for: .normal)
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
         
         containerView.addSubview(sendButton)
@@ -126,13 +123,13 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
         inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
         let separator = UIView()
-        separator.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        separator.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
         separator.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.addSubview(separator)
         
         separator.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        separator.bottomAnchor.constraint(equalTo: containerView.topAnchor, constant: -1).isActive = true
+        separator.bottomAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         separator.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
@@ -177,11 +174,11 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
         let data = Data(text.utf8)
         
         do {
-            try session.send(data: data, toPeer: session.toPeer, type: .Text)
+            try session.send(data: data, toPeer: session.toPeer, type: .Text, command: .Create)
             let message = MessageMO(chat: chat, user: user, date: Date(), data: data)
             CoreDataManager.shared.saveContext()
             
-            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!).\" \nПользователю \(message.user!.userName!). \n ObjectID: \(message.objectID)")
+            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
             print(message.objectID.uriRepresentation().lastPathComponent)
             
             inputTextField.text = nil
@@ -192,16 +189,100 @@ class ChatController: UICollectionViewController, UITextFieldDelegate, UIImagePi
         }
     }
     
+    @objc func editButtonPressed() {
+        guard let text = inputTextField.text else { return }
+        let data = Data(text.utf8)
+        guard let messageID = changingMessage?.objectID.uriRepresentation().lastPathComponent else { return }
+        
+        
+        do {
+            try session.sendEdit(data: data, toPeer: session.toPeer, type: .Text, messageID: messageID)
+            
+            changingMessage?.data = data
+            CoreDataManager.shared.saveContext()
+            
+            print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
+            
+            guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
+            self.messages = messages
+            
+            changingMessage = nil
+            
+            sendButton.removeTarget(self, action: #selector(editButtonPressed), for: .allEvents)
+            sendButton.setTitle("Send", for: .normal)
+            sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
+            inputTextField.text = nil
+        } catch {
+            
+        }
+    }
+    
     @objc func imagePickerButtonPressed() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.allowsEditing = true
-        imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
+        
+    }
+    
+    @objc func longPressHandler(gesture: UILongPressGestureRecognizer) {
+        let p = gesture.location(in: self.collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: p) else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        
+        switch gesture.state {
+            case UIGestureRecognizer.State.began:
+                collectionView.bringSubviewToFront(cell)
+                UIView.animate(withDuration: 0.25) {
+                    cell.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+                }
+            default:
+                UIView.animate(withDuration: 0.25) {
+                    cell.transform = .identity
+                    }
+                gesture.state = .ended
+                
+                guard let messages = messages, let data = messages[indexPath.item].data else { return }
+                
+                changingMessage = messages[indexPath.item]
+                let text = String(data: data, encoding: .utf8)
+                inputTextField.text = text
+                
+                sendButton.removeTarget(self, action: #selector(sendButtonPressed), for: .allEvents)
+                sendButton.setTitle("Edit", for: .normal)
+                sendButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
+        }
+//        if gesture.state != .ended {
+//            return
+//        }
     }
 }
 
 //MARK: -NetworkSessionDelegate
 extension ChatController: NetworkSessionDelegate {
+    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String) {
+        switch type {
+            case .Text:
+                
+                switch command {
+                    case .Update:
+                        let text = String(data: data, encoding: .utf8)
+                        print("Получено изменение сообщения с id: \(messageID)\nТекст сообщения: \(text!)")
+                        
+                        for message in messages! {
+                            if message.objectID.uriRepresentation().lastPathComponent == messageID {
+                                message.data = data
+                                
+                            }
+                        }
+                        
+                        CoreDataManager.shared.saveContext()
+                        
+                        messages = CoreDataManager.shared.fetchMessages(fromChat: chat)
+                    default:
+                        break
+                }
+            case .Image:
+                break
+        }
+    }
+    
     func networkSession(_ stop: NetworkSession) {
         CoreDataManager.shared.saveContext()
         print("Connection with \(stop.toPeer!) is lost")
@@ -210,20 +291,26 @@ extension ChatController: NetworkSessionDelegate {
         }
     }
     
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType) {
+    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType) {
+        
         switch type {
             case .Text:
-                let message = MessageMO(chat: chat, user: secondUser, date: Date(), data: data)
-                CoreDataManager.shared.saveContext()
-                
-                print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!).\" \n От пользователя \(message.user!.userName!). \n ObjectID: \(message.objectID)")
-                print(message.objectID.uriRepresentation().lastPathComponent)
-                
-                guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
-                self.messages = messages
-            case .Image:
-                guard let image = UIImage(data: data) else { return }
-                print(image.description)
+                switch command {
+                    case .Create:
+                        let message = MessageMO(chat: chat, user: secondUser, date: Date(), data: data)
+                        CoreDataManager.shared.saveContext()
+        
+                        print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
+                        print(message.objectID.uriRepresentation().lastPathComponent)
+        
+                        guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
+                        self.messages = messages
+                    default:
+                        break
+                }
+                break
+            default:
+                break
         }
     }
     
@@ -277,6 +364,8 @@ extension ChatController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages?.count ?? 0
     }
+    
+    
 }
 
 //MARK: -UICollectionViewDelegateFlowLayout

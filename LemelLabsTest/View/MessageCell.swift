@@ -42,10 +42,10 @@ class MessageCell: UICollectionViewCell {
     }
     
     func configureUI() {
-        bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0)
+        bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
         bubbleViewRightAnchor?.isActive = true
         
-        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8)
         bubbleViewRightAnchor?.isActive = false
         
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
