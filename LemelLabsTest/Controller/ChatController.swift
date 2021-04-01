@@ -8,15 +8,18 @@ import MultipeerConnectivity
 
 private let reuseIdentifier = "Cell"
 
-class ChatController: UICollectionViewController {
+class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var containerViewBottomConstraint: NSLayoutConstraint?
     var session: NetworkSession!
     var user: UserMO!
+    var frc: NSFetchedResultsController<MessageMO>!
     var secondUser: UserMO! {
         didSet {
             navigationItem.title = secondUser.userName
         }
     }
+    
     var chat: ChatMO!
     var messages: [MessageMO]? {
         didSet {
@@ -55,6 +58,23 @@ class ChatController: UICollectionViewController {
         collectionView.dataSource = self
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = .white
+        
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<MessageMO>(entityName: "Message")
+        let predicate = NSPredicate(format: "chat == %@", chat)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateStamp", ascending: true)]
+        frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        
+        do {
+            try frc.performFetch()
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
+        
+        
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -175,15 +195,19 @@ class ChatController: UICollectionViewController {
         
         do {
             try session.send(data: data, toPeer: session.toPeer, type: .Text, command: .Create)
-            let message = MessageMO(chat: chat, user: user, date: Date(), data: data)
-            CoreDataManager.shared.saveContext()
             
-            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
-            print(message.objectID.uriRepresentation().lastPathComponent)
+            let message = MessageMO(context: context)
+            message.chat = chat
+            message.dateStamp = Date()
+            message.data = data
+            message.user = user
+//            let message = MessageMO(chat: chat, user: user, date: Date(), data: data)
+//            CoreDataManager.shared.saveContext()
+            
+//            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
+//            print(message.objectID.uriRepresentation().lastPathComponent)
             
             inputTextField.text = nil
-            guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
-            self.messages = messages
         } catch {
             print(error.localizedDescription)
         }
@@ -199,7 +223,6 @@ class ChatController: UICollectionViewController {
             try session.sendEdit(data: data, toPeer: session.toPeer, type: .Text, messageID: messageID)
             
             changingMessage?.data = data
-            CoreDataManager.shared.saveContext()
             
             print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
             
@@ -274,9 +297,6 @@ extension ChatController: NetworkSessionDelegate {
                             }
                         }
                         
-                        CoreDataManager.shared.saveContext()
-                        
-                        messages = CoreDataManager.shared.fetchMessages(fromChat: chat)
                     default:
                         break
                 }
@@ -286,7 +306,7 @@ extension ChatController: NetworkSessionDelegate {
     }
     
     func networkSession(_ stop: NetworkSession) {
-        CoreDataManager.shared.saveContext()
+        
         print("Connection with \(stop.toPeer!) is lost")
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
@@ -300,14 +320,15 @@ extension ChatController: NetworkSessionDelegate {
                 switch command {
                     case .Create:
                         
-                        let message = MessageMO(context: UIApplication.shared.delegate as? AppDelegate)
-                        CoreDataManager.shared.saveContext()
+                        let message = MessageMO(context: context)
+                        message.user = secondUser
+                        message.data = data
+                        message.dateStamp = Date()
+                        
         
                         print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
                         print(message.objectID.uriRepresentation().lastPathComponent)
         
-                        guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
-                        self.messages = messages
                     default:
                         break
                 }

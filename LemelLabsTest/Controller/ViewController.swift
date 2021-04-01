@@ -10,6 +10,7 @@ import MultipeerConnectivity
 import CoreData
 
 class ViewController: UIViewController {
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var peerID: MCPeerID!
     var isAdvertising = false
     var user: UserMO!
@@ -42,7 +43,11 @@ class ViewController: UIViewController {
     
         configureUI()
         
+        
         user = CoreDataManager.shared.fetchUser(peerID: peerID)
+        
+        
+        
         print("Current User: \(user.userName!)")
     }
     
