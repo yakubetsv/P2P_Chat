@@ -9,7 +9,8 @@ import MultipeerConnectivity
 private let reuseIdentifier = "Cell"
 
 class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate {
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    weak var context: NSManagedObjectContext?
     var containerViewBottomConstraint: NSLayoutConstraint?
     var session: NetworkSession!
     var user: UserMO!
@@ -59,7 +60,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = .white
         
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        context = getContext()
         
         let fetchRequest = NSFetchRequest<MessageMO>(entityName: "Message")
         let predicate = NSPredicate(format: "chat == %@", chat)
@@ -97,7 +98,14 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         configureUI()
     }
     
+    private func getContext() -> NSManagedObjectContext? {
     
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil
+        }
+        let context = delegate.dataController.managedObjectContext
+        return context
+    }
     
     func configureUI() {
         view.backgroundColor = .white

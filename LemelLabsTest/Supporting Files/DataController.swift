@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 
 class DataController: NSObject {
+    
     var managedObjectContext: NSManagedObjectContext
     init(completion: @escaping () -> ()) {
         guard let modelURL = Bundle.main.url(forResource: "LemelLabsTest", withExtension:"momd") else {
