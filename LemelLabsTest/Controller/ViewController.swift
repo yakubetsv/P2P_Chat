@@ -12,9 +12,9 @@ import CoreData
 class ViewController: UIViewController {
     var user: UserMO?
     
-    let context: NSManagedObjectContext = {
+    let dataController: DataController = {
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        return delegate.dataController.managedObjectContext
+        return delegate.dataController
     }()
     
     var peerID: MCPeerID!
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
         fetchRequst.predicate = NSPredicate.init(format: "userName == %@", peerID.displayName)
         
         do {
-            let users = try context.fetch(fetchRequst)
+            let users = try dataController.managedObjectContext.fetch(fetchRequst)
 
             if users.isEmpty {
                 guard let newUser = createUser(peerID: peerID) else { return nil}
@@ -71,19 +71,19 @@ class ViewController: UIViewController {
     }
 
     func entityForName(entityName name: String) -> NSEntityDescription {
-        return NSEntityDescription.entity(forEntityName: name, in: context)!
+        return NSEntityDescription.entity(forEntityName: name, in: dataController.managedObjectContext)!
     }
 
     func createUser(peerID: MCPeerID) -> UserMO? {
 
         let entityDesc = entityForName(entityName: "User")
-        let entityModel = UserMO(entity: entityDesc, insertInto: context)
+        let entityModel = UserMO(entity: entityDesc, insertInto: dataController.managedObjectContext)
 
         entityModel.userName = peerID.displayName
 
         print("New user is been created: \(String(describing: entityModel.userName))")
 
-        try? context.save()
+        try? dataController.managedObjectContext.save()
 
         return entityModel
     }
@@ -174,6 +174,7 @@ extension ViewController: NetworkSessionDelegate {
             let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
             chatVC.session = session
             chatVC.user = self.user
+            chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
             self.navigationController?.pushViewController(chatVC, animated: true)
         }
         

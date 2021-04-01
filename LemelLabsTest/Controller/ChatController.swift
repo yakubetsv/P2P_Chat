@@ -10,19 +10,24 @@ private let reuseIdentifier = "Cell"
 
 class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     
-    weak var context: NSManagedObjectContext?
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        
+    }
+    
+    var context: NSManagedObjectContext?
+    var dataController: DataController?
+    
     var fetchResultController: NSFetchedResultsController<MessageMO>!
     var containerViewBottomConstraint: NSLayoutConstraint?
     var session: NetworkSession!
     var user: UserMO!
-    
-    var companionUser: UserMO! {
+    var companionUser: UserMO? {
         didSet {
-            navigationItem.title = companionUser.userName
+            navigationItem.title = companionUser?.userName
         }
     }
     
-    var chat: ChatMO! {
+    var chat: ChatMO? {
         didSet {
             collectionView.reloadData()
         }
@@ -62,7 +67,12 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         configureUI()
         context = getContext()
+        dataController = getDataController()
+        chat = fetchChatForUsers(firstUser: user, secondUser: companionUser!)
+        
         initializeFetchResultController()
+        
+        session.delegate = self
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -71,9 +81,12 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         longPress.minimumPressDuration = 0.5
         collectionView.addGestureRecognizer(longPress)
         
-        session.delegate = self
         
-        chat = fetchChatForUsers(firstUser: user, secondUser: companionUser)
+    }
+    
+    private func getDataController() -> DataController? {
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
+        return delegate.dataController
     }
     
     private func getContext() -> NSManagedObjectContext? {
@@ -86,7 +99,13 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     }
     
     private func initializeFetchResultController() {
-        guard let context = context else { return }
+        guard let context = context else {
+            return
+        }
+        guard let chat = chat else {
+            return
+        }
+        
         let fetchRequest = NSFetchRequest<MessageMO>(entityName: "Message")
         let predicate = NSPredicate(format: "chat == %@", chat)
         fetchRequest.predicate = predicate
@@ -96,6 +115,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         do {
             try fetchResultController.performFetch()
+            collectionView.reloadData()
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
@@ -198,16 +218,20 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         do {
             try session.send(data: data, toPeer: session.companionPeerID, type: .Text, command: .Create)
             
-//            let message = MessageMO(context: context)
-//            message.chat = chat
-//            message.dateStamp = Date()
-//            message.data = data
-//            message.user = user
-//            let message = MessageMO(chat: chat, user: user, date: Date(), data: data)
-//            CoreDataManager.shared.saveContext()
+            guard let context = context else {
+                return
+            }
+            let message = MessageMO(context: context)
+            message.data = data
+            message.chat = chat
+            message.isMe = true
+            message.user = user
+            message.dateStamp = Date()
             
-//            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
-//            print(message.objectID.uriRepresentation().lastPathComponent)
+            dataController?.saveContext()
+            
+            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
+            print(message.objectID.uriRepresentation().lastPathComponent)
             
             inputTextField.text = nil
         } catch {
@@ -332,12 +356,6 @@ extension ChatController: NetworkSessionDelegate {
                         let text = String(data: data, encoding: .utf8)
                         print("Получено изменение сообщения с id: \(messageID)\nТекст сообщения: \(text!)")
                         
-                        for message in messages! {
-                            if message.objectID.uriRepresentation().lastPathComponent == messageID {
-                                message.data = data
-                                
-                            }
-                        }
                         
                     default:
                         break
@@ -361,15 +379,21 @@ extension ChatController: NetworkSessionDelegate {
             case .Text:
                 switch command {
                     case .Create:
-//                        
-//                        let message = MessageMO(context: context)
-//                        message.user = secondUser
-//                        message.data = data
-//                        message.dateStamp = Date()
-//                        
-//        
-//                        print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
-//                        print(message.objectID.uriRepresentation().lastPathComponent)
+                        guard let context = context else {
+                            return
+                        }
+                        
+                        let message = MessageMO(context: context)
+                        message.user = companionUser
+                        message.data = data
+                        message.dateStamp = Date()
+                        message.isMe = false
+                        message.chat = chat
+        
+                        dataController?.saveContext()
+                        
+                        print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
+                        print(message.objectID.uriRepresentation().lastPathComponent)
                      break
                     default:
                         break
@@ -410,6 +434,7 @@ extension ChatController {
             fatalError("Attempt to configure cell without a managed object")
         }
         
+        print(message.isMe)
         cell.message = message
         
         return cell
@@ -431,7 +456,7 @@ extension ChatController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
         
-        guard let data = messages?[indexPath.item].data, let text = String(data: data, encoding: .utf8) else { return CGSize(width: view.frame.width, height: height) }
+        guard let data = fetchResultController.object(at: indexPath).data, let text = String(data: data, encoding: .utf8) else { return CGSize(width: view.frame.width, height: height) }
         
         height = estimatedFrameForText(text: text).height + 18
         

@@ -9,7 +9,12 @@ import UIKit
 
 class MessageCell: UICollectionViewCell {
     
-    public weak var message: MessageMO!
+    public weak var message: MessageMO! {
+        didSet {
+            configureUI()
+            configureCell()
+        }
+    }
     
     private let textField: UITextView = {
         let field = UITextView()
@@ -37,7 +42,7 @@ class MessageCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview(bubbleView)
         addSubview(textField)
-        configureUI()
+        
     }
 
     
@@ -85,12 +90,13 @@ class MessageCell: UICollectionViewCell {
             textField.text = text
             if bubbleViewLeftAnchor?.isActive == true { bubbleViewLeftAnchor?.isActive = false}
             bubbleViewRightAnchor?.isActive = true
-        } else {
+        } else if !message.isMe {
             bubbleView.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
             textField.textColor = .black
             textField.text = text
             if bubbleViewRightAnchor?.isActive == true { bubbleViewRightAnchor?.isActive = false}
             bubbleViewLeftAnchor?.isActive = true
+            
         }
         
         let width = estimatedFrameForText(text: text).width + 11
