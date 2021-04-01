@@ -62,20 +62,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         context = getContext()
         
-        let fetchRequest = NSFetchRequest<MessageMO>(entityName: "Message")
-        let predicate = NSPredicate(format: "chat == %@", chat)
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateStamp", ascending: true)]
-        frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        frc.delegate = self
-        
-        do {
-            try frc.performFetch()
-        } catch {
-            fatalError("Failed to fetch entities: \(error)")
-        }
-        
-        
+        initializeFetchResultController()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -86,9 +73,9 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         session.delegate = self
         
-        secondUser = CoreDataManager.shared.fetchUser(peerID: session.toPeer)
-        chat = CoreDataManager.shared.fetchChatForUsers(firstUser: user, secondUser: secondUser)
-        messages = CoreDataManager.shared.fetchMessages(fromChat: chat)
+//        secondUser = CoreDataManager.shared.fetchUser(peerID: session.toPeer)
+//        chat = CoreDataManager.shared.fetchChatForUsers(firstUser: user, secondUser: secondUser)
+//        messages = CoreDataManager.shared.fetchMessages(fromChat: chat)
         
         messages?.forEach({ (message) in
             guard let data = message.data, let text = String(data: data, encoding: .utf8), let user = message.user else { return }
@@ -105,6 +92,22 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         }
         let context = delegate.dataController.managedObjectContext
         return context
+    }
+    
+    private func initializeFetchResultController() {
+        guard let context = context else { return }
+        let fetchRequest = NSFetchRequest<MessageMO>(entityName: "Message")
+        let predicate = NSPredicate(format: "chat == %@", chat)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateStamp", ascending: true)]
+        frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        
+        do {
+            try frc.performFetch()
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
     }
     
     func configureUI() {
