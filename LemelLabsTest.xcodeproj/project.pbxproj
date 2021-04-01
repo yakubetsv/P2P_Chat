@@ -14,7 +14,6 @@
 		CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */; };
 		CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatController.swift */; };
 		CB99BD292615D09A0096C7AC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD282615D09A0096C7AC /* DataController.swift */; };
-		CBE8E73C2613115C000166BB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8E73B2613115C000166BB /* CoreDataManager.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
 		CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* ViewController.swift */; };
@@ -51,7 +50,6 @@
 		CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		CB5FEAF2260CA91F00871971 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		CB99BD282615D09A0096C7AC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
-		CBE8E73B2613115C000166BB /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				CB3C90A52610F5FA00AACE3A /* Local Networking */,
 				CBAA05A9260B581B009CDEB7 /* Supporting Files */,
 				CBAA05A8260B5800009CDEB7 /* Utils */,
-				CBE8E73B2613115C000166BB /* CoreDataManager.swift */,
 			);
 			path = LemelLabsTest;
 			sourceTree = "<group>";
@@ -335,7 +332,6 @@
 			files = (
 				CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */,
 				CB99BD292615D09A0096C7AC /* DataController.swift in Sources */,
-				CBE8E73C2613115C000166BB /* CoreDataManager.swift in Sources */,
 				CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */,
 				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
 				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,

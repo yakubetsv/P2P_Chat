@@ -11,24 +11,24 @@ private let reuseIdentifier = "Cell"
 class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     
     weak var context: NSManagedObjectContext?
+    var fetchResultController: NSFetchedResultsController<MessageMO>!
     var containerViewBottomConstraint: NSLayoutConstraint?
     var session: NetworkSession!
     var user: UserMO!
-    var frc: NSFetchedResultsController<MessageMO>!
-    var secondUser: UserMO! {
+    
+    var companionUser: UserMO! {
         didSet {
-            navigationItem.title = secondUser.userName
+            navigationItem.title = companionUser.userName
         }
     }
     
-    var chat: ChatMO!
-    var messages: [MessageMO]? {
+    var chat: ChatMO! {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
+            collectionView.reloadData()
         }
     }
+    
+    var messages: [MessageMO]?
     var changingMessage: MessageMO?
     
     let inputTextField: UITextField = {
@@ -60,8 +60,8 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = .white
         
+        configureUI()
         context = getContext()
-        
         initializeFetchResultController()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
@@ -73,16 +73,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         session.delegate = self
         
-//        secondUser = CoreDataManager.shared.fetchUser(peerID: session.toPeer)
-//        chat = CoreDataManager.shared.fetchChatForUsers(firstUser: user, secondUser: secondUser)
-//        messages = CoreDataManager.shared.fetchMessages(fromChat: chat)
-        
-        messages?.forEach({ (message) in
-            guard let data = message.data, let text = String(data: data, encoding: .utf8), let user = message.user else { return }
-            print("Сообщение: \(text), от пользователя \(user.userName!)")
-        })
-        
-        configureUI()
+        chat = fetchChatForUsers(firstUser: user, secondUser: companionUser)
     }
     
     private func getContext() -> NSManagedObjectContext? {
@@ -100,11 +91,11 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         let predicate = NSPredicate(format: "chat == %@", chat)
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateStamp", ascending: true)]
-        frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        frc.delegate = self
+        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchResultController.delegate = self
         
         do {
-            try frc.performFetch()
+            try fetchResultController.performFetch()
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
@@ -205,13 +196,13 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         let data = Data(text.utf8)
         
         do {
-            try session.send(data: data, toPeer: session.toPeer, type: .Text, command: .Create)
+            try session.send(data: data, toPeer: session.companionPeerID, type: .Text, command: .Create)
             
-            let message = MessageMO(context: context)
-            message.chat = chat
-            message.dateStamp = Date()
-            message.data = data
-            message.user = user
+//            let message = MessageMO(context: context)
+//            message.chat = chat
+//            message.dateStamp = Date()
+//            message.data = data
+//            message.user = user
 //            let message = MessageMO(chat: chat, user: user, date: Date(), data: data)
 //            CoreDataManager.shared.saveContext()
             
@@ -231,14 +222,14 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         
         do {
-            try session.sendEdit(data: data, toPeer: session.toPeer, type: .Text, messageID: messageID)
+            try session.sendEdit(data: data, toPeer: session.companionPeerID, type: .Text, messageID: messageID)
             
             changingMessage?.data = data
             
             print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
             
-            guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
-            self.messages = messages
+//            guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
+//            self.messages = messages
             
             changingMessage = nil
             
@@ -273,11 +264,11 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                     cell.transform = .identity
                     }
                 
-                guard let messages = messages, let data = messages[indexPath.item].data else { return }
+                //guard let messages = messages, let data = messages[indexPath.item].data else { return }
                 
-                changingMessage = messages[indexPath.item]
-                let text = String(data: data, encoding: .utf8)
-                inputTextField.text = text
+//                changingMessage = messages[indexPath.item]
+//                let text = String(data: data, encoding: .utf8)
+//                inputTextField.text = text
                 
                 sendButton.removeTarget(self, action: #selector(sendButtonPressed), for: .allEvents)
                 sendButton.setTitle("Edit", for: .normal)
@@ -287,6 +278,46 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                 
                 
         }
+    }
+    
+    func fetchChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO? {
+        guard let context = context else {
+            return nil
+        }
+        
+        let fetchReques = NSFetchRequest<ChatMO>(entityName: "Chat")
+
+        do {
+            let chats = try context.fetch(fetchReques)
+
+            for chat in chats {
+                if chat.users!.contains(firstUser) && chat.users!.contains(secondUser) {
+                    print("Chat for users \(firstUser.userName!) and \(secondUser.userName!) already created!")
+                    return chat
+                }
+            }
+            return createChatForUsers(firstUser: firstUser, secondUser: secondUser)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
+
+    func createChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO? {
+        guard let context = context else {
+            return nil
+        }
+        let entityDesc = NSEntityDescription.entity(forEntityName: "Chat", in: context)
+        let chatModel = ChatMO(entity: entityDesc!, insertInto: context)
+
+        firstUser.addToChats(chatModel)
+        secondUser.addToChats(chatModel)
+
+        chatModel.addToUsers([firstUser, secondUser])
+
+        try? context.save()
+        print("Chat for \(firstUser.userName!) and \(secondUser.userName!) was created!")
+
+        return chatModel
     }
 }
 
@@ -318,7 +349,7 @@ extension ChatController: NetworkSessionDelegate {
     
     func networkSession(_ stop: NetworkSession) {
         
-        print("Connection with \(stop.toPeer!) is lost")
+        print("Connection with \(stop.companionPeerID!) is lost")
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
         }
@@ -330,19 +361,20 @@ extension ChatController: NetworkSessionDelegate {
             case .Text:
                 switch command {
                     case .Create:
-                        
-                        let message = MessageMO(context: context)
-                        message.user = secondUser
-                        message.data = data
-                        message.dateStamp = Date()
-                        
-        
-                        print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
-                        print(message.objectID.uriRepresentation().lastPathComponent)
-        
+//                        
+//                        let message = MessageMO(context: context)
+//                        message.user = secondUser
+//                        message.data = data
+//                        message.dateStamp = Date()
+//                        
+//        
+//                        print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
+//                        print(message.objectID.uriRepresentation().lastPathComponent)
+                     break
                     default:
                         break
                 }
+                
                 break
             default:
                 break
@@ -373,31 +405,22 @@ extension ChatController {
 extension ChatController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MessageCell
-        
-        guard let messages = messages, let data = messages[indexPath.item].data, let text = String(data: data, encoding: .utf8), let user = messages[indexPath.item].user else { return cell }
-        
-        if user != self.user {
-            cell.bubbleView.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
-            cell.textField.textColor = .black
-            cell.textField.text = text
-            if cell.bubbleViewRightAnchor?.isActive == true { cell.bubbleViewRightAnchor?.isActive = false}
-            cell.bubbleViewLeftAnchor?.isActive = true
-        } else {
-            cell.bubbleView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-            cell.textField.textColor = .white
-            cell.textField.text = text
-            if cell.bubbleViewLeftAnchor?.isActive == true { cell.bubbleViewLeftAnchor?.isActive = false}
-            cell.bubbleViewRightAnchor?.isActive = true
+  
+        guard let message = self.fetchResultController?.object(at: indexPath) else {
+            fatalError("Attempt to configure cell without a managed object")
         }
         
-        let width = estimatedFrameForText(text: text).width + 11
-        cell.bubbleViewWidthAnchor?.constant = width
+        cell.message = message
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages?.count ?? 0
+        guard let sections = fetchResultController.sections else {
+                fatalError("No sections in fetchedResultsController")
+            }
+            let sectionInfo = sections[section]
+            return sectionInfo.numberOfObjects
     }
     
     
@@ -415,7 +438,7 @@ extension ChatController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: view.frame.width, height: height)
     }
     
-    func estimatedFrameForText(text: String) -> CGRect {
+    private func estimatedFrameForText(text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         

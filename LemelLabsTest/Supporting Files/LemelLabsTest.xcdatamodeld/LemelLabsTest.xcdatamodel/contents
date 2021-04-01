@@ -8,6 +8,8 @@
     <entity name="Message" representedClassName="MessageMO" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Binary"/>
         <attribute name="dateStamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isMe" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isText" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="messageID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="messages" inverseEntity="Chat"/>
@@ -21,7 +23,7 @@
     </entity>
     <elements>
         <element name="Chat" positionX="-34.3248291015625" positionY="399.1498107910156" width="128" height="74"/>
-        <element name="Message" positionX="-455.961669921875" positionY="393.7963256835938" width="128" height="119"/>
+        <element name="Message" positionX="-455.961669921875" positionY="393.7963256835938" width="128" height="149"/>
         <element name="User" positionX="-261.104248046875" positionY="561.9723205566406" width="128" height="89"/>
     </elements>
 </model>

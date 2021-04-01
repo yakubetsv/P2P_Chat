@@ -12,22 +12,20 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var dataController: DataController!
+    var dataController: DataController = DataController() {
+        
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        dataController = DataController() {
-            if #available(iOS 13.0, *) {
-                
-                
-                
-            } else {
-                self.window = UIWindow()
-                let rootVC = ViewController()
-                let navigationController = UINavigationController(rootViewController: rootVC)
-                self.window?.rootViewController = navigationController
-                self.window?.makeKeyAndVisible()
-            }
+        if #available(iOS 13.0, *) {
+            
+        } else {
+            self.window = UIWindow()
+            let rootVC = ViewController()
+            let navigationController = UINavigationController(rootViewController: rootVC)
+            self.window?.rootViewController = navigationController
+            self.window?.makeKeyAndVisible()
         }
         
         return true

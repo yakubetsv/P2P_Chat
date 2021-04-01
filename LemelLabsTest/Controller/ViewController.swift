@@ -10,10 +10,15 @@ import MultipeerConnectivity
 import CoreData
 
 class ViewController: UIViewController {
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var user: UserMO?
+    
+    let context: NSManagedObjectContext = {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        return delegate.dataController.managedObjectContext
+    }()
+    
     var peerID: MCPeerID!
     var isAdvertising = false
-    var user: UserMO!
     var session: NetworkSession!
     var browser: ChatBrowser!
     
@@ -37,18 +42,51 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        peerID = MCPeerID(displayName: UIDevice.current.name)
-        
+        peerID = MCPeerID(displayName: UIDevice.current.identifierForVendor!.uuidString)
+
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    
         configureUI()
         
-        
-        user = CoreDataManager.shared.fetchUser(peerID: peerID)
-        
-        print("Current User: \(user.userName!)")
+        user = fetchUser(peerID: peerID)
+
     }
     
+    func fetchUser(peerID: MCPeerID) -> UserMO? {
+        let fetchRequst = NSFetchRequest<UserMO>(entityName: "User")
+        fetchRequst.predicate = NSPredicate.init(format: "userName == %@", peerID.displayName)
+        
+        do {
+            let users = try context.fetch(fetchRequst)
+
+            if users.isEmpty {
+                guard let newUser = createUser(peerID: peerID) else { return nil}
+                return newUser
+            }
+
+            print("User: \(peerID.displayName) alreadry created.")
+            return users[0]
+        } catch {
+            fatalError("\(error)")
+        }
+    }
+
+    func entityForName(entityName name: String) -> NSEntityDescription {
+        return NSEntityDescription.entity(forEntityName: name, in: context)!
+    }
+
+    func createUser(peerID: MCPeerID) -> UserMO? {
+
+        let entityDesc = entityForName(entityName: "User")
+        let entityModel = UserMO(entity: entityDesc, insertInto: context)
+
+        entityModel.userName = peerID.displayName
+
+        print("New user is been created: \(String(describing: entityModel.userName))")
+
+        try? context.save()
+
+        return entityModel
+    }
     
     @objc func startHost() {
         session = NetworkSession(myself: peerID, isServer: true, host: peerID)
@@ -64,6 +102,7 @@ class ViewController: UIViewController {
                 let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
                 chatVC.session = session
                 chatVC.user = self.user
+                chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
                 nearbyDevicesVC.dismiss(animated: true, completion: nil)
                 self.navigationController?.pushViewController(chatVC, animated: true)
             }
@@ -75,7 +114,7 @@ class ViewController: UIViewController {
         
     }
     
-    func configureUI() {
+    private func configureUI() {
         view.addSubview(hostSessionButton)
         hostSessionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         hostSessionButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -88,6 +127,8 @@ class ViewController: UIViewController {
         joinSessionButton.widthAnchor.constraint(equalTo: hostSessionButton.widthAnchor).isActive = true
         joinSessionButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
+    
+    
 }
 
 extension ViewController: NetworkSessionDelegate {

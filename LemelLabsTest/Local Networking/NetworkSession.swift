@@ -34,7 +34,7 @@ class NetworkSession: NSObject {
     let isServer: Bool
     let host: MCPeerID
     let session: MCSession
-    var toPeer: MCPeerID!
+    var companionPeerID: MCPeerID!
     
     weak var delegate: NetworkSessionDelegate?
     
@@ -155,7 +155,7 @@ extension NetworkSession: MCSessionDelegate {
         switch state {
             case .connected:
                 print("\(peerID.displayName) is connected.")
-                toPeer = peerID
+                companionPeerID = peerID
                 delegate?.networkSession(self, joined: secondPeer)
             case .connecting:
                 print("\(peerID.displayName) is connecting")
