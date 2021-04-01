@@ -46,8 +46,6 @@ class ViewController: UIViewController {
         
         user = CoreDataManager.shared.fetchUser(peerID: peerID)
         
-        
-        
         print("Current User: \(user.userName!)")
     }
     
