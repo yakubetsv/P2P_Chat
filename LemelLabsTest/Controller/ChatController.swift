@@ -11,7 +11,7 @@ private let reuseIdentifier = "Cell"
 class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
+        collectionView.reloadData()
     }
     
     var context: NSManagedObjectContext?
@@ -252,8 +252,6 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
             
             print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
             
-//            guard let messages = CoreDataManager.shared.fetchMessages(fromChat: chat) else { return }
-//            self.messages = messages
             
             changingMessage = nil
             
@@ -287,12 +285,10 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                 UIView.animate(withDuration: 0.25) {
                     cell.transform = .identity
                     }
+                changingMessage = fetchResultController.object(at: indexPath)
                 
-                //guard let messages = messages, let data = messages[indexPath.item].data else { return }
-                
-//                changingMessage = messages[indexPath.item]
-//                let text = String(data: data, encoding: .utf8)
-//                inputTextField.text = text
+                let text = String(data: changingMessage!.data!, encoding: .utf8)
+                inputTextField.text = text
                 
                 sendButton.removeTarget(self, action: #selector(sendButtonPressed), for: .allEvents)
                 sendButton.setTitle("Edit", for: .normal)
@@ -348,21 +344,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
 //MARK: -NetworkSessionDelegate
 extension ChatController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String) {
-        switch type {
-            case .Text:
-                
-                switch command {
-                    case .Update:
-                        let text = String(data: data, encoding: .utf8)
-                        print("Получено изменение сообщения с id: \(messageID)\nТекст сообщения: \(text!)")
-                        
-                        
-                    default:
-                        break
-                }
-            case .Image:
-                break
-        }
+        
     }
     
     func networkSession(_ stop: NetworkSession) {
@@ -389,19 +371,34 @@ extension ChatController: NetworkSessionDelegate {
                         message.dateStamp = Date()
                         message.isMe = false
                         message.chat = chat
+                        message.isText = true
         
                         dataController?.saveContext()
                         
                         print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
                         print(message.objectID.uriRepresentation().lastPathComponent)
-                     break
                     default:
                         break
                 }
-                
-                break
-            default:
-                break
+            case .Image:
+                switch command {
+                    case .Create:
+                        guard let context = context else {
+                            return
+                        }
+                        
+                        let message = MessageMO(context: context)
+                        message.user = companionUser
+                        message.data = data
+                        message.dateStamp = Date()
+                        message.isMe = false
+                        message.chat = chat
+                        message.isText = true
+        
+                        dataController?.saveContext()
+                    default:
+                        break
+                }
         }
     }
     
@@ -447,8 +444,6 @@ extension ChatController {
             let sectionInfo = sections[section]
             return sectionInfo.numberOfObjects
     }
-    
-    
 }
 
 //MARK: -UICollectionViewDelegateFlowLayout
