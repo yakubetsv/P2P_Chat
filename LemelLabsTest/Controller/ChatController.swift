@@ -6,9 +6,11 @@ import UIKit
 import CoreData
 import MultipeerConnectivity
 
-private let reuseIdentifier = "Cell"
+
 
 class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+    private let textCellReuseIdentifier = "TextCell"
+    private let imageCellReuseIdentifier = "ImageCell"
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.reloadData()
@@ -65,7 +67,8 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(TextCell.self, forCellWithReuseIdentifier: textCellReuseIdentifier)
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellReuseIdentifier)
         collectionView.backgroundColor = .white
         
         configureUI()
@@ -277,7 +280,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     @objc func longPressHandler(gesture: UILongPressGestureRecognizer) {
         let p = gesture.location(in: self.collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: p) else { return }
-        guard let cell = collectionView.cellForItem(at: indexPath) as? MessageCell else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TextCell else { return }
         
         if !cell.message.isMe {
             return
@@ -442,11 +445,11 @@ extension ChatController {
 //MARK: -CollectionViewDataSource
 extension ChatController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MessageCell
-  
         guard let message = self.fetchResultController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: textCellReuseIdentifier, for: indexPath) as! TextCell
         
         cell.message = message
         cell.configureUI()

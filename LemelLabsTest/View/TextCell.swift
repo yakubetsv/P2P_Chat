@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MessageCell: UICollectionViewCell {
+class TextCell: UICollectionViewCell {
     
     public weak var message: MessageMO!
     
@@ -54,16 +54,10 @@ class MessageCell: UICollectionViewCell {
             return
         }
         
-        for constraint in self.constraints {
-            self.removeConstraint(constraint)
-        }
-        
-        for constraint in bubbleView.constraints {
-            bubbleView.removeConstraint(constraint)
-        }
+        self.constraints.forEach { self.removeConstraint($0) }
+        bubbleView.constraints.forEach { bubbleView.removeConstraint($0) }
         
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        
         let width = estimatedFrameForText(text: text).width + 11
         
         bubbleViewWidth = nil
