@@ -356,6 +356,20 @@ extension ChatController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, received: SampleProtocol) {
         let text = String(data: received.content, encoding: .utf8)
         print(text!)
+        
+        
+        switch received.command {
+            case CommandType.Create.rawValue:
+                let message = createMessage(received: received)
+                
+                print("Получено сообщение: \(String(data: message.data!, encoding: .utf8)!)")
+            case CommandType.Update.rawValue:
+                break
+            case CommandType.Delete.rawValue:
+                break
+            default:
+                break
+        }
     }
     
     func networkSession(_ stop: NetworkSession) {
@@ -371,6 +385,23 @@ extension ChatController: NetworkSessionDelegate {
     
     func networkSession(_ session: NetworkSession, joined: MCPeerID) {
         //
+    }
+    
+    private func createMessage(received: SampleProtocol) -> MessageMO {
+        guard let context = context else {
+            fatalError("Can't create message!")
+        }
+        
+        let message = MessageMO(context: context)
+        message.chat = chat
+        message.dateStamp = Date()
+        message.isMe = false
+        message.data = received.content
+        message.isText = true
+        
+        dataController?.saveContext()
+        
+        return message
     }
 }
 
