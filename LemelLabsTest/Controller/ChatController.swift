@@ -361,7 +361,6 @@ extension ChatController: NetworkSessionDelegate {
         switch received.command {
             case CommandType.Create.rawValue:
                 let message = createMessage(received: received)
-                
                 print("Получено сообщение: \(String(data: message.data!, encoding: .utf8)!)")
             case CommandType.Update.rawValue:
                 break
@@ -388,8 +387,19 @@ extension ChatController: NetworkSessionDelegate {
     }
     
     private func createMessage(received: SampleProtocol) -> MessageMO {
+        switch received.type {
+            case ContentType.Text.rawValue:
+                return createTextMessage(received: received)
+            case ContentType.Image.rawValue:
+                return createImageMessage(received: received)
+            default:
+                fatalError("Can't create message")
+        }
+    }
+    
+    private func createTextMessage(received: SampleProtocol) -> MessageMO {
         guard let context = context else {
-            fatalError("Can't create message!")
+            fatalError("Can't create context!")
         }
         
         let message = MessageMO(context: context)
@@ -398,6 +408,23 @@ extension ChatController: NetworkSessionDelegate {
         message.isMe = false
         message.data = received.content
         message.isText = true
+        
+        dataController?.saveContext()
+        
+        return message
+    }
+    
+    private func createImageMessage(received: SampleProtocol) -> MessageMO {
+        guard let context = context else {
+            fatalError("Can't create context!")
+        }
+        
+        let message = MessageMO(context: context)
+        message.chat = chat
+        message.dateStamp = Date()
+        message.isMe = false
+        message.data = received.content
+        message.isText = false
         
         dataController?.saveContext()
         
