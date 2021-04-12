@@ -469,13 +469,20 @@ extension ChatController {
 //MARK: -UICollectionViewDelegateFlowLayout
 extension ChatController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var height: CGFloat = 80
+        var height: CGFloat = 200
+        var width: CGFloat = 200
+       
+        let message = fetchResultController.object(at: indexPath)
         
-        guard let data = fetchResultController.object(at: indexPath).data, let text = String(data: data, encoding: .utf8) else { return CGSize(width: view.frame.width, height: height) }
-        
-        height = estimatedFrameForText(text: text).height + 18
-        
-        return CGSize(width: view.frame.width, height: height)
+        if message.isText {
+            guard let data = fetchResultController.object(at: indexPath).data, let text = String(data: data, encoding: .utf8) else { return CGSize(width: view.frame.width, height: height) }
+            
+            height = estimatedFrameForText(text: text).height + 18
+            
+            return CGSize(width: view.frame.width, height: height)
+        } else {
+            return CGSize(width: width, height: height)
+        }
     }
     
     private func estimatedFrameForText(text: String) -> CGRect {
