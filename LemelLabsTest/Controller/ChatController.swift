@@ -14,6 +14,10 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         collectionView.reloadData()
     }
     
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        collectionView.reloadData()
+    }
+    
     var context: NSManagedObjectContext?
     var dataController: DataController?
     
@@ -32,8 +36,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
             collectionView.reloadData()
         }
     }
-    
-    var messages: [MessageMO]?
+
     var changingMessage: MessageMO?
     
     let inputTextField: UITextField = {
@@ -213,55 +216,58 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     
     @objc func sendButtonPressed() {
         guard let text = inputTextField.text else { return }
-        let data = Data(text.utf8)
         
-        do {
-            try session.send(data: data, toPeer: session.companionPeerID, type: .Text, command: .Create)
-            
-            guard let context = context else {
-                return
-            }
-            let message = MessageMO(context: context)
-            message.data = data
-            message.chat = chat
-            message.isMe = true
-            message.user = user
-            message.dateStamp = Date()
-            
-            dataController?.saveContext()
-            
-            print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
-            print(message.objectID.uriRepresentation().lastPathComponent)
-            
-            inputTextField.text = nil
-        } catch {
-            print(error.localizedDescription)
+        guard let context = context else {
+            return
         }
+        
+        let data = Data(text.utf8)
+        let message = MessageMO(context: context)
+        message.data = data
+        message.chat = chat
+        message.isMe = true
+        message.user = user
+        message.dateStamp = Date()
+        
+        let messageID = message.objectID.uriRepresentation().lastPathComponent
+        
+        let networkMessage = SampleProtocol(command: CommandType.Create.rawValue, type: ContentType.Text.rawValue, id: messageID, content: data)
+    
+        session.sendNetworkMessage(message: networkMessage)
+        
+        dataController?.saveContext()
+        
+        print("Отправлено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nПользователю \(message.user!.userName!)\nObjectID: \(message.objectID)")
+        print(message.objectID.uriRepresentation().lastPathComponent)
+        
+        inputTextField.text = nil
+        
     }
     
     @objc func editButtonPressed() {
-        guard let text = inputTextField.text else { return }
-        let data = Data(text.utf8)
-        guard let messageID = changingMessage?.objectID.uriRepresentation().lastPathComponent else { return }
-        
-        
-        do {
-            try session.sendEdit(data: data, toPeer: session.companionPeerID, type: .Text, messageID: messageID)
-            
-            changingMessage?.data = data
-            
-            print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
-            
-            
-            changingMessage = nil
-            
-            sendButton.removeTarget(self, action: #selector(editButtonPressed), for: .allEvents)
-            sendButton.setTitle("Send", for: .normal)
-            sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
-            inputTextField.text = nil
-        } catch {
-            
-        }
+//        guard let text = inputTextField.text else { return }
+//        let data = Data(text.utf8)
+//        guard let messageID = changingMessage?.objectID.uriRepresentation().lastPathComponent else { return }
+//
+//        do {
+//            try session.sendEdit(data: data, toPeer: session.companionPeerID, type: .Text, messageID: messageID)
+//
+//            changingMessage?.data = data
+//
+//            print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
+//
+//
+//            changingMessage = nil
+//
+//            sendButton.removeTarget(self, action: #selector(editButtonPressed), for: .allEvents)
+//            sendButton.setTitle("Send", for: .normal)
+//            sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
+//            inputTextField.text = nil
+//
+//            dataController?.saveContext()
+//        } catch {
+//
+//        }
     }
     
     @objc func imagePickerButtonPressed() {
@@ -271,7 +277,11 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     @objc func longPressHandler(gesture: UILongPressGestureRecognizer) {
         let p = gesture.location(in: self.collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: p) else { return }
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? MessageCell else { return }
+        
+        if !cell.message.isMe {
+            return
+        }
         
         switch gesture.state {
             case UIGestureRecognizer.State.began:
@@ -328,7 +338,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         }
         let entityDesc = NSEntityDescription.entity(forEntityName: "Chat", in: context)
         let chatModel = ChatMO(entity: entityDesc!, insertInto: context)
-
+        
         firstUser.addToChats(chatModel)
         secondUser.addToChats(chatModel)
 
@@ -343,75 +353,24 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
 
 //MARK: -NetworkSessionDelegate
 extension ChatController: NetworkSessionDelegate {
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String) {
-        
+    func networkSession(_ session: NetworkSession, received: SampleProtocol) {
+        let text = String(data: received.content, encoding: .utf8)
+        print(text!)
     }
     
     func networkSession(_ stop: NetworkSession) {
-        
         print("Connection with \(stop.companionPeerID!) is lost")
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType) {
-        
-        switch type {
-            case .Text:
-                switch command {
-                    case .Create:
-                        guard let context = context else {
-                            return
-                        }
-                        
-                        let message = MessageMO(context: context)
-                        message.user = companionUser
-                        message.data = data
-                        message.dateStamp = Date()
-                        message.isMe = false
-                        message.chat = chat
-                        message.isText = true
-        
-                        dataController?.saveContext()
-                        
-                        print("Получено сообщение с текстом: \"\(String(data: message.data!, encoding: .utf8)!)\"\nОт пользователя \(message.user!.userName!).\nObjectID: \(message.objectID)")
-                        print(message.objectID.uriRepresentation().lastPathComponent)
-                    default:
-                        break
-                }
-            case .Image:
-                switch command {
-                    case .Create:
-                        guard let context = context else {
-                            return
-                        }
-                        
-                        let message = MessageMO(context: context)
-                        message.user = companionUser
-                        message.data = data
-                        message.dateStamp = Date()
-                        message.isMe = false
-                        message.chat = chat
-                        message.isText = true
-        
-                        dataController?.saveContext()
-                    default:
-                        break
-                }
-        }
-    }
-    
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool) -> ())) {
-        
-    }
-    
-    func networkSession(_ session: NetworkSession, received data: Data, fromPeerID: MCPeerID) {
-        
+        //
     }
     
     func networkSession(_ session: NetworkSession, joined: MCPeerID) {
-        
+        //
     }
 }
 
@@ -431,8 +390,8 @@ extension ChatController {
             fatalError("Attempt to configure cell without a managed object")
         }
         
-        print(message.isMe)
         cell.message = message
+        cell.configureUI()
         
         return cell
     }

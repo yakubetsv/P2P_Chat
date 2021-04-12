@@ -9,12 +9,7 @@ import UIKit
 
 class MessageCell: UICollectionViewCell {
     
-    public weak var message: MessageMO! {
-        didSet {
-            configureUI()
-            configureCell()
-        }
-    }
+    public weak var message: MessageMO!
     
     private let textField: UITextView = {
         let field = UITextView()
@@ -34,44 +29,19 @@ class MessageCell: UICollectionViewCell {
         return view
     }()
     
-    private var bubbleViewWidthAnchor: NSLayoutConstraint?
-    private var bubbleViewLeftAnchor: NSLayoutConstraint?
-    private var bubbleViewRightAnchor: NSLayoutConstraint?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(bubbleView)
         addSubview(textField)
-        
     }
 
+    private var bubbleViewWidth: NSLayoutConstraint?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureUI() {
-        bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
-        bubbleViewRightAnchor?.isActive = true
-        
-        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8)
-        bubbleViewRightAnchor?.isActive = false
-        
-        bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        bubbleViewWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
-        bubbleViewWidthAnchor?.isActive = true
-        bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        
-        textField.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
-        textField.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        textField.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
-        textField.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
-        
-        
-    }
-    
-    private func configureCell() {
-        
+    public func configureUI() {
         guard let message = message else {
             return
         }
@@ -84,24 +54,44 @@ class MessageCell: UICollectionViewCell {
             return
         }
         
-        if message.isMe {
-            bubbleView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-            textField.textColor = .white
-            textField.text = text
-            if bubbleViewLeftAnchor?.isActive == true { bubbleViewLeftAnchor?.isActive = false}
-            bubbleViewRightAnchor?.isActive = true
-        } else if !message.isMe {
-            bubbleView.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
-            textField.textColor = .black
-            textField.text = text
-            if bubbleViewRightAnchor?.isActive == true { bubbleViewRightAnchor?.isActive = false}
-            bubbleViewLeftAnchor?.isActive = true
-            
+        for constraint in self.constraints {
+            self.removeConstraint(constraint)
         }
         
+        for constraint in bubbleView.constraints {
+            bubbleView.removeConstraint(constraint)
+        }
+        
+        bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        
         let width = estimatedFrameForText(text: text).width + 11
-        bubbleViewWidthAnchor?.constant = width
+        
+        bubbleViewWidth = nil
+        bubbleViewWidth = bubbleView.widthAnchor.constraint(equalToConstant: width)
+        bubbleViewWidth?.isActive = true
+        
+        bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        
+        if message.isMe {
+            textField.textColor = .white
+            textField.text = text
+            bubbleView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+            bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+        } else {
+            textField.textColor = .black
+            textField.text = text
+            bubbleView.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
+            bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        }
+        
+        textField.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
+        textField.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        textField.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
+        textField.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+        
+        
     }
+    
     
     private func estimatedFrameForText(text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)

@@ -21,11 +21,12 @@ enum CommandType: String {
 }
 
 protocol NetworkSessionDelegate: class {
-    func networkSession(_ session: NetworkSession, received data: Data, fromPeerID: MCPeerID)
+//    func networkSession(_ session: NetworkSession, received data: Data, fromPeerID: MCPeerID)
     func networkSession(_ session: NetworkSession, joined: MCPeerID)
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool)->()))
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType)
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String)
+    func networkSession(_ session: NetworkSession, received: SampleProtocol)
+//    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType)
+//    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String)
     func networkSession(_ stop: NetworkSession)
 }
 
@@ -73,76 +74,43 @@ class NetworkSession: NSObject {
         print("Stop advertising...")
     }
     
+    func sendNetworkMessage(message: SampleProtocol) {
+        let data = message.encode()
+        do {
+            try session.send(data, toPeers: [companionPeerID!], with: .unreliable)
+        }
+        catch {
+            fatalError(error.localizedDescription)
+        }
+    }
     
     func send(data: Data, toPeer: MCPeerID, type: ContentType, command: CommandType) throws {
-        let fileName = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
-        try data.write(to: fileName)
         
-        switch type {
-            case .Text:
-                switch command {
-                    case .Create:
-                        let url = type.rawValue.appendingFormat("/%@", command.rawValue)
-                        
-                        session.sendResource(at: fileName, withName: url, toPeer: toPeer) { (error) in
-                            if error != nil {
-                                return
-                            }
-
-                            do {
-                                try FileManager.default.removeItem(at: fileName)
-                            } catch {
-                                print("Removing failed")
-                            }
-                        }
-                    case .Update:
-                        break
-                    case .Delete:
-                        break
-                }
-                
-                
-            case .Image:
-                session.sendResource(at: fileName, withName: ContentType.Image.rawValue, toPeer: toPeer) { (error) in
-                    if error != nil {
-                        return
-                    }
-                    
-                    do {
-                        try FileManager.default.removeItem(at: fileName)
-                    } catch {
-                        print("Removing failed")
-                    }
-                }
-        }
+        
     }
     
-    func sendEdit(data: Data, toPeer: MCPeerID, type: ContentType, messageID: String) throws {
-        let fileName = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
-        try data.write(to: fileName)
-        
-        switch type {
-            case .Text:
-                let url = type.rawValue.appendingFormat("/%@", CommandType.Update.rawValue).appendingFormat("/%@", messageID)
-                session.sendResource(at: fileName, withName: url, toPeer: toPeer) { (error) in
-                    if error != nil {
-                        return
-                    }
-
-                    do {
-                        try FileManager.default.removeItem(at: fileName)
-                    } catch {
-                        print("Removing failed")
-                    }
-                }
-            case .Image:
-                break
-        }
-    }
-    
-    func sendImage() {
-        
-    }
+//    func sendEdit(data: Data, toPeer: MCPeerID, type: ContentType, messageID: String) throws {
+//        let fileName = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
+//        try data.write(to: fileName)
+//
+//        switch type {
+//            case .Text:
+//                let url = type.rawValue.appendingFormat("/%@", CommandType.Update.rawValue).appendingFormat("/%@", messageID)
+//                session.sendResource(at: fileName, withName: url, toPeer: toPeer) { (error) in
+//                    if error != nil {
+//                        return
+//                    }
+//
+//                    do {
+//                        try FileManager.default.removeItem(at: fileName)
+//                    } catch {
+//                        print("Removing failed")
+//                    }
+//                }
+//            case .Image:
+//                break
+//        }
+//    }
     
     func stopSession() {
         session.disconnect()
@@ -168,7 +136,8 @@ extension NetworkSession: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        
+        let networkMessage = data.decodeJSONToNetworkModel()
+        delegate?.networkSession(self, received: networkMessage)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -180,41 +149,41 @@ extension NetworkSession: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-        if let error = error {
-            print(error.localizedDescription)
-            return
-        }
-        
-        guard let url = localURL else { return }
-        
-        do {
-            let data = try Data(contentsOf: url)
-            
-            let args = resourceName.split(separator: "/")
-            
-            print(args)
-            
-            switch args[0] {
-                case ContentType.Text.rawValue:
-                    switch args[1] {
-                        case CommandType.Create.rawValue:
-                            delegate?.networkSession(self, received: data, type: .Text, command: .Create)
-                        case CommandType.Update.rawValue:
-                            let messageID = args[2]
-                            delegate?.networkSession(self, received: data, type: .Text, command: .Update, messageID: String(messageID))
-                        case CommandType.Delete.rawValue:
-                            let _ = args[2]
-                            break
-                        default:
-                            break
-                    }
-                    
-                default:
-                    break
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
+//        if let error = error {
+//            print(error.localizedDescription)
+//            return
+//        }
+//
+//        guard let url = localURL else { return }
+//
+//        do {
+//            let data = try Data(contentsOf: url)
+//
+//            let args = resourceName.split(separator: "/")
+//
+//            print(args)
+//
+//            switch args[0] {
+//                case ContentType.Text.rawValue:
+//                    switch args[1] {
+//                        case CommandType.Create.rawValue:
+//                            delegate?.networkSession(self, received: data, type: .Text, command: .Create)
+//                        case CommandType.Update.rawValue:
+//                            let messageID = args[2]
+//                            delegate?.networkSession(self, received: data, type: .Text, command: .Update, messageID: String(messageID))
+//                        case CommandType.Delete.rawValue:
+//                            let _ = args[2]
+//                            break
+//                        default:
+//                            break
+//                    }
+//
+//                default:
+//                    break
+//            }
+//        } catch {
+//            print(error.localizedDescription)
+//        }
     }
 }
 

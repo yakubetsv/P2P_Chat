@@ -84,25 +84,18 @@ extension NearbyUsersController: UITableViewDelegate {
 }
 
 extension NearbyUsersController: NetworkSessionDelegate {
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String) {
-        
+    func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool) -> ())) {
+        //
+    }
+    
+    func networkSession(_ session: NetworkSession, received: SampleProtocol) {
+        //
     }
     
     func networkSession(_ stop: NetworkSession) {
-        
+        //
     }
     
-    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType) {
-        
-    }
-    
-    func networkSession(_ session: NetworkSession, received data: Data, fromPeerID: MCPeerID) {
-        
-    }
-    
-    func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool) -> ())) {
-        
-    }
     
     func networkSession(_ session: NetworkSession, joined: MCPeerID) {
         complition?(session)
