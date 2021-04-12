@@ -82,8 +82,6 @@ class TextCell: UICollectionViewCell {
         textField.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         textField.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         textField.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
-        
-        
     }
     
     

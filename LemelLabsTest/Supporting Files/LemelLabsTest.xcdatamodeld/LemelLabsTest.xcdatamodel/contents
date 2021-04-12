@@ -10,7 +10,7 @@
         <attribute name="dateStamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="isMe" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isText" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="messageID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="messageID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="messages" inverseEntity="Chat"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User"/>
     </entity>

@@ -13,6 +13,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 18
+        imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         return imageView
     }()
     
@@ -27,7 +31,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(bubbleView)
-        addSubview(imageView)
+        bubbleView.addSubview(imageView)
     }
 
     private var bubbleViewWidth: NSLayoutConstraint?
@@ -65,12 +69,17 @@ class ImageCollectionViewCell: UICollectionViewCell {
             bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         }
         
-        imageView.image = image
-        
         imageView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         imageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         imageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
         
+        imageView.image = image
+        imageView.contentMode = .scaleToFill
+        
+    }
+    
+    @objc private func handleZoomTap() {
+        print("Zoom is tapped")
     }
 }

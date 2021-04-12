@@ -10,10 +10,10 @@ import Foundation
 struct SampleProtocol: Codable {
     var command: String
     var type: String
-    var id: String
+    var id: UUID
     var content: Data
     
-    init(command: String, type: String, id: String, content: Data) {
+    init(command: String, type: String, id: UUID, content: Data) {
         self.command = command
         self.type = type
         self.id = id

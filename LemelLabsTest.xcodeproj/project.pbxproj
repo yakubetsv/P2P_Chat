@@ -14,6 +14,7 @@
 		CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */; };
 		CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */; };
 		CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatController.swift */; };
+		CB75BF4A26244C36004C6EFA /* UIImage + resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75BF4926244C36004C6EFA /* UIImage + resize.swift */; };
 		CB99BD292615D09A0096C7AC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD282615D09A0096C7AC /* DataController.swift */; };
 		CB99BD3926171D230096C7AC /* CommandPopUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3826171D230096C7AC /* CommandPopUpController.swift */; };
 		CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */; };
@@ -54,6 +55,7 @@
 		CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBrowser.swift; sourceTree = "<group>"; };
 		CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		CB5FEAF2260CA91F00871971 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
+		CB75BF4926244C36004C6EFA /* UIImage + resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + resize.swift"; sourceTree = "<group>"; };
 		CB99BD282615D09A0096C7AC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		CB99BD3826171D230096C7AC /* CommandPopUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPopUpController.swift; sourceTree = "<group>"; };
 		CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleProtocol.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				CBEEC711260A15B400B357D9 /* Main.storyboard */,
 				CB99BD282615D09A0096C7AC /* DataController.swift */,
 				CB99BD4726172B310096C7AC /* DataExtension.swift */,
+				CB75BF4926244C36004C6EFA /* UIImage + resize.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */,
 				CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */,
 				CB3C90A12610E5A700AACE3A /* NearbyDevise.swift in Sources */,
+				CB75BF4A26244C36004C6EFA /* UIImage + resize.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

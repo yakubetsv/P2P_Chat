@@ -21,12 +21,9 @@ enum CommandType: String {
 }
 
 protocol NetworkSessionDelegate: class {
-//    func networkSession(_ session: NetworkSession, received data: Data, fromPeerID: MCPeerID)
     func networkSession(_ session: NetworkSession, joined: MCPeerID)
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool)->()))
     func networkSession(_ session: NetworkSession, received: SampleProtocol)
-//    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType)
-//    func networkSession(_ session: NetworkSession, received data: Data, type: ContentType, command: CommandType, messageID: String)
     func networkSession(_ stop: NetworkSession)
 }
 
@@ -51,10 +48,6 @@ class NetworkSession: NSObject {
         super.init()
         
         self.session.delegate = self
-    }
-    
-    deinit {
-        print("Network Session is dead")
     }
     
     func startAdvertising() {
@@ -137,53 +130,20 @@ extension NetworkSession: MCSessionDelegate {
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         let networkMessage = data.decodeJSONToNetworkModel()
+        print("Получено сообщение, тип сообщения: \(networkMessage.type)")
         delegate?.networkSession(self, received: networkMessage)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        
+        //
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        
+        //
     }
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-//        if let error = error {
-//            print(error.localizedDescription)
-//            return
-//        }
-//
-//        guard let url = localURL else { return }
-//
-//        do {
-//            let data = try Data(contentsOf: url)
-//
-//            let args = resourceName.split(separator: "/")
-//
-//            print(args)
-//
-//            switch args[0] {
-//                case ContentType.Text.rawValue:
-//                    switch args[1] {
-//                        case CommandType.Create.rawValue:
-//                            delegate?.networkSession(self, received: data, type: .Text, command: .Create)
-//                        case CommandType.Update.rawValue:
-//                            let messageID = args[2]
-//                            delegate?.networkSession(self, received: data, type: .Text, command: .Update, messageID: String(messageID))
-//                        case CommandType.Delete.rawValue:
-//                            let _ = args[2]
-//                            break
-//                        default:
-//                            break
-//                    }
-//
-//                default:
-//                    break
-//            }
-//        } catch {
-//            print(error.localizedDescription)
-//        }
+        //
     }
 }
 
