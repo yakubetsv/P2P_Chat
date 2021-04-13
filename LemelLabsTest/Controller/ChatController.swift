@@ -6,16 +6,20 @@ import UIKit
 import CoreData
 import MultipeerConnectivity
 
-
-
-class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate, UINavigationControllerDelegate {
+class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
     private let textCellReuseIdentifier = "TextCell"
     private let imageCellReuseIdentifier = "ImageCell"
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.reloadData()
-        let indexPath = controller.indexPath(forObject: controller.fetchedObjects!.last as! MessageMO)
-        collectionView.scrollToItem(at: indexPath!, at: .bottom, animated: true)
+        guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MessageMO) else {
+            return
+        }
+        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -34,13 +38,11 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
             navigationItem.title = companionUser?.userName
         }
     }
-    
     var chat: ChatMO? {
         didSet {
             collectionView.reloadData()
         }
     }
-
     var changingMessage: MessageMO?
     
     let inputTextField: UITextField = {
@@ -62,8 +64,6 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +87,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         view.addGestureRecognizer(tap)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressHandler(gesture:)))
-        longPress.minimumPressDuration = 0.5
+        longPress.minimumPressDuration = 0.25
         collectionView.addGestureRecognizer(longPress)
     }
     
@@ -285,12 +285,24 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         present(imagePickerViewController, animated: true, completion: nil)
     }
     
+    private func deleteMessage(message: MessageMO) {
+        guard let context = context else {
+            return
+        }
+        guard let id = message.messageID else {
+            return
+        }
+        let deleteMessage = SampleProtocol(command: CommandType.Delete.rawValue, type: ContentType.Text.rawValue, id: id, content: Data())
+        session.sendNetworkMessage(message: deleteMessage)
+        context.delete(message)
+        dataController?.saveContext()
+    }
+    
     @objc func longPressHandler(gesture: UILongPressGestureRecognizer) {
         let p = gesture.location(in: self.collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: p) else {
             return
         }
-        
         
         if let cell = collectionView.cellForItem(at: indexPath) as? TextCell {
             if !cell.message.isMe {
@@ -301,25 +313,42 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                 case UIGestureRecognizer.State.began:
                     collectionView.bringSubviewToFront(cell)
                     UIView.animate(withDuration: 0.25) {
-                        
                         cell.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
-                        
                     }
                 case UIGestureRecognizer.State.ended:
                     UIView.animate(withDuration: 0.25) {
                         cell.transform = .identity
                         }
                     
+                    let commandPopUpViewController = CommandPopUpController()
+                    commandPopUpViewController.modalPresentationStyle = .popover
+                    commandPopUpViewController.preferredContentSize = CGSize(width: 200, height: 87)
                     
+                    if let popoverController = commandPopUpViewController.popoverPresentationController {
+                        popoverController.sourceView = cell.bubbleView
+                        popoverController.sourceRect = cell.bubbleView.bounds
+                        popoverController.delegate = self
+                    }
                     
-//                    changingMessage = fetchResultController.object(at: indexPath)
-//                    
-//                    let text = String(data: changingMessage!.data!, encoding: .utf8)
-//                    inputTextField.text = text
-//                    
-//                    sendButton.removeTarget(self, action: #selector(sendButtonPressed), for: .allEvents)
-//                    sendButton.setTitle("Edit", for: .normal)
-//                    sendButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
+                    present(commandPopUpViewController, animated: true, completion: nil)
+                    
+                    commandPopUpViewController.complition = { [self] (command: CommandType) in
+                        if command == CommandType.Update {
+                            self.changingMessage = self.fetchResultController.object(at: indexPath)
+
+                            let text = String(data: self.changingMessage!.data!, encoding: .utf8)
+                            self.inputTextField.text = text
+                            
+                            DispatchQueue.main.async {
+                                self.sendButton.removeTarget(self, action: #selector(self.sendButtonPressed), for: .allEvents)
+                                self.sendButton.setTitle("Edit", for: .normal)
+                                self.sendButton.addTarget(self, action: #selector(self.editButtonPressed), for: .touchUpInside)
+                            }
+                        } else if command == CommandType.Delete {
+                            let deletingMessage = self.fetchResultController.object(at: indexPath)
+                            deleteMessage(message: deletingMessage)
+                        }
+                    }
                 default:
                     break
             }
@@ -338,15 +367,40 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                     UIView.animate(withDuration: 0.25) {
                         cell.transform = .identity
                         }
-                    changingMessage = fetchResultController.object(at: indexPath)
-                    isEditingImage = true
-                    let imagePickerViewController = UIImagePickerController()
-                    imagePickerViewController.allowsEditing = true
-                    imagePickerViewController.delegate = self
-                    present(imagePickerViewController, animated: true, completion: nil)
+                    let commandPopUpViewController = CommandPopUpController()
+                    commandPopUpViewController.modalPresentationStyle = .popover
+                    commandPopUpViewController.preferredContentSize = CGSize(width: 200, height: 87)
+                    
+                    if let popoverController = commandPopUpViewController.popoverPresentationController {
+                        popoverController.sourceView = cell.imageView
+                        popoverController.sourceRect = cell.imageView.bounds
+                        popoverController.delegate = self
+                    }
+                    
+                    present(commandPopUpViewController, animated: true, completion: nil)
+                    
+                    commandPopUpViewController.complition = { [self] (command: CommandType) in
+                        if command == CommandType.Update {
+                            
+                            changingMessage = fetchResultController.object(at: indexPath)
+                            isEditingImage = true
+                            let imagePickerViewController = UIImagePickerController()
+                            imagePickerViewController.allowsEditing = true
+                            imagePickerViewController.delegate = self
+                            
+                            DispatchQueue.main.async {
+                                present(imagePickerViewController, animated: true, completion: nil)
+                            }
+                        } else if command == CommandType.Delete {
+                            let deletingMessage = self.fetchResultController.object(at: indexPath)
+                            deleteMessage(message: deletingMessage)
+                        }
+                    }
+                    
+                    
                 default:
                     break
-        }
+            }
         }
     }
     
@@ -400,7 +454,7 @@ extension ChatController: NetworkSessionDelegate {
             case CommandType.Update.rawValue:
                 updateMessage(received: received)
             case CommandType.Delete.rawValue:
-                break
+                deleteMessage(received: received)
             default:
                 break
         }
@@ -438,6 +492,8 @@ extension ChatController: NetworkSessionDelegate {
                 message.data = received.content
             }
         })
+        
+        dataController?.saveContext()
     }
     
     private func createTextMessage(received: SampleProtocol) -> MessageMO {
@@ -474,6 +530,20 @@ extension ChatController: NetworkSessionDelegate {
         dataController?.saveContext()
         
         return message
+    }
+    
+    private func deleteMessage(received: SampleProtocol) {
+        guard let context = context else {
+            return
+        }
+        let id = received.id
+        
+        fetchResultController.fetchedObjects?.forEach({ (message: MessageMO) in
+            if message.messageID == id {
+                context.delete(message)
+                dataController?.saveContext()
+            }
+        })
     }
 }
 
@@ -582,6 +652,8 @@ extension ChatController: UIImagePickerControllerDelegate {
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        isEditingImage = false
+        changingMessage = nil
         dismiss(animated: true, completion: nil)
     }
 }

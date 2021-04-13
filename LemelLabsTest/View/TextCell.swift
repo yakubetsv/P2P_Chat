@@ -21,7 +21,7 @@ class TextCell: UICollectionViewCell {
         return field
     }()
     
-    private let bubbleView: UIView = {
+    let bubbleView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 18

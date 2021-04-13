@@ -60,7 +60,7 @@ extension NearbyUsersController: ChatBrowserDelegate {
 }
 
 
-//MARK: -TableViewDataSource
+//MARK: -TableView DataSource Methods
 extension NearbyUsersController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return nearbyDevices.count
@@ -73,16 +73,16 @@ extension NearbyUsersController: UITableViewDataSource {
     }
 }
 
-//MARK: -TableViewDelegate
+//MARK: -TableView Delegate Methods
 extension NearbyUsersController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         session = browser.join(chat: nearbyDevices[indexPath.row])
         session.delegate = self
     }
 }
 
+//MARK: -NetworkSession Delegate Methods
 extension NearbyUsersController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool) -> ())) {
         //

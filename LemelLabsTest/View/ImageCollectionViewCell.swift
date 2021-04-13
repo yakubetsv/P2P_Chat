@@ -10,7 +10,7 @@ import UIKit
 class ImageCollectionViewCell: UICollectionViewCell {
     public weak var message: MessageMO!
     
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 18
@@ -20,7 +20,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let bubbleView: UIView = {
+    let bubbleView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 18
