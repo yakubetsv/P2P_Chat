@@ -77,11 +77,6 @@ class NetworkSession: NSObject {
         }
     }
     
-    func send(data: Data, toPeer: MCPeerID, type: ContentType, command: CommandType) throws {
-        
-        
-    }
-    
     func stopSession() {
         session.disconnect()
     }
