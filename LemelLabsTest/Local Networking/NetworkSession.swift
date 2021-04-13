@@ -23,7 +23,7 @@ enum CommandType: String {
 protocol NetworkSessionDelegate: class {
     func networkSession(_ session: NetworkSession, joined: MCPeerID)
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool)->()))
-    func networkSession(_ session: NetworkSession, received: SampleProtocol)
+    func networkSession(_ session: NetworkSession, received: NetworkMessage)
     func networkSession(_ stop: NetworkSession)
 }
 
@@ -67,7 +67,7 @@ class NetworkSession: NSObject {
         print("Stop advertising...")
     }
     
-    func sendNetworkMessage(message: SampleProtocol) {
+    func sendNetworkMessage(message: NetworkMessage) {
         let data = message.encode()
         do {
             try session.send(data, toPeers: [companionPeerID!], with: .unreliable)

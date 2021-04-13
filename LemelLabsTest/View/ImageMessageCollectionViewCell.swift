@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageMessageUICollectionViewCell: UICollectionViewCell {
+class ImageMessageCollectionViewCell: UICollectionViewCell {
     public weak var message: MOMessage!
     private var bubbleViewWidth: NSLayoutConstraint?
     

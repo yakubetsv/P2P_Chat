@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CommandPopUpUITableViewController: UITableViewController {
+class CommandPopUpTableViewController: UITableViewController {
     let cellIdentifier = "DefaultCell"
     let commands = [CommandType.update, CommandType.delete]
     var complition: ((CommandType) -> ())?

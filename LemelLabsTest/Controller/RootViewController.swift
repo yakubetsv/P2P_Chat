@@ -9,7 +9,7 @@ import UIKit
 import MultipeerConnectivity
 import CoreData
 
-class RootUIViewController: UIViewController {
+class RootViewController: UIViewController {
     var user: MOUser?
     
     let dataController: DataController = {
@@ -93,12 +93,12 @@ class RootUIViewController: UIViewController {
     }
     
     @objc func joinHost() {
-        let nearbyDevicesVC = NearbyUsersUIViewController()
+        let nearbyDevicesVC = NearbyUsersViewController()
         nearbyDevicesVC.modalPresentationStyle = .currentContext
         nearbyDevicesVC.peerID = peerID
         nearbyDevicesVC.complition = { (session: NetworkSession) in
             DispatchQueue.main.async {
-                let chatVC = ChatLogUICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+                let chatVC = ChatLogCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
                 chatVC.session = session
                 chatVC.user = self.user
                 chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
@@ -126,8 +126,8 @@ class RootUIViewController: UIViewController {
     
 }
 
-extension RootUIViewController: NetworkSessionDelegate {
-    func networkSession(_ session: NetworkSession, received: SampleProtocol) {
+extension RootViewController: NetworkSessionDelegate {
+    func networkSession(_ session: NetworkSession, received: NetworkMessage) {
         //
     }
     
@@ -158,7 +158,7 @@ extension RootUIViewController: NetworkSessionDelegate {
         
         
         DispatchQueue.main.async {
-            let chatVC = ChatLogUICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            let chatVC = ChatLogCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
             chatVC.session = session
             chatVC.user = self.user
             chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)

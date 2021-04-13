@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB042226260E22300076561C /* TextMesageUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB042225260E22300076561C /* TextMesageUICollectionViewCell.swift */; };
-		CB39B62126242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB39B62026242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift */; };
-		CB3C909B2610DB8000AACE3A /* NearbyUsersUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C909A2610DB8000AACE3A /* NearbyUsersUIViewController.swift */; };
+		CB042226260E22300076561C /* TextMesageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB042225260E22300076561C /* TextMesageCollectionViewCell.swift */; };
+		CB39B62126242E1B00D7F4AC /* ImageMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB39B62026242E1B00D7F4AC /* ImageMessageCollectionViewCell.swift */; };
+		CB3C909B2610DB8000AACE3A /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C909A2610DB8000AACE3A /* NearbyUsersViewController.swift */; };
 		CB3C90A12610E5A700AACE3A /* NearbyDevise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */; };
 		CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */; };
 		CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */; };
-		CB5FEAF3260CA91F00871971 /* ChatLogUICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatLogUICollectionViewController.swift */; };
+		CB5FEAF3260CA91F00871971 /* ChatLogCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatLogCollectionViewController.swift */; };
 		CB75BF4A26244C36004C6EFA /* UIImage + resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75BF4926244C36004C6EFA /* UIImage + resize.swift */; };
 		CB99BD292615D09A0096C7AC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD282615D09A0096C7AC /* DataController.swift */; };
-		CB99BD3926171D230096C7AC /* CommandPopUpUITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */; };
-		CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */; };
+		CB99BD3926171D230096C7AC /* CommandPopUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3826171D230096C7AC /* CommandPopUpTableViewController.swift */; };
+		CB99BD3E2617297B0096C7AC /* NetworkMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3D2617297B0096C7AC /* NetworkMessage.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
-		CBEEC710260A15B400B357D9 /* RootUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */; };
+		CBEEC710260A15B400B357D9 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* RootViewController.swift */; };
 		CBEEC713260A15B400B357D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC711260A15B400B357D9 /* Main.storyboard */; };
 		CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */; };
 		CBEEC718260A15B600B357D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC717260A15B600B357D9 /* Assets.xcassets */; };
@@ -48,21 +48,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CB042225260E22300076561C /* TextMesageUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMesageUICollectionViewCell.swift; sourceTree = "<group>"; };
-		CB39B62026242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMessageUICollectionViewCell.swift; sourceTree = "<group>"; };
-		CB3C909A2610DB8000AACE3A /* NearbyUsersUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersUIViewController.swift; sourceTree = "<group>"; };
+		CB042225260E22300076561C /* TextMesageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMesageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CB39B62026242E1B00D7F4AC /* ImageMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CB3C909A2610DB8000AACE3A /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
 		CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyDevise.swift; sourceTree = "<group>"; };
 		CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBrowser.swift; sourceTree = "<group>"; };
 		CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
-		CB5FEAF2260CA91F00871971 /* ChatLogUICollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogUICollectionViewController.swift; sourceTree = "<group>"; };
+		CB5FEAF2260CA91F00871971 /* ChatLogCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogCollectionViewController.swift; sourceTree = "<group>"; };
 		CB75BF4926244C36004C6EFA /* UIImage + resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + resize.swift"; sourceTree = "<group>"; };
 		CB99BD282615D09A0096C7AC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
-		CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPopUpUITableViewController.swift; sourceTree = "<group>"; };
-		CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleProtocol.swift; sourceTree = "<group>"; };
+		CB99BD3826171D230096C7AC /* CommandPopUpTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPopUpTableViewController.swift; sourceTree = "<group>"; };
+		CB99BD3D2617297B0096C7AC /* NetworkMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMessage.swift; sourceTree = "<group>"; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootUIViewController.swift; sourceTree = "<group>"; };
+		CBEEC70F260A15B400B357D9 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		CBEEC712260A15B400B357D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CBEEC715260A15B400B357D9 /* LemelLabsTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LemelLabsTest.xcdatamodel; sourceTree = "<group>"; };
 		CBEEC717260A15B600B357D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,8 +105,8 @@
 		CB042224260E21BB0076561C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CB042225260E22300076561C /* TextMesageUICollectionViewCell.swift */,
-				CB39B62026242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift */,
+				CB042225260E22300076561C /* TextMesageCollectionViewCell.swift */,
+				CB39B62026242E1B00D7F4AC /* ImageMessageCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -146,10 +146,10 @@
 		CBAA05AA260B582B009CDEB7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */,
-				CB5FEAF2260CA91F00871971 /* ChatLogUICollectionViewController.swift */,
-				CB3C909A2610DB8000AACE3A /* NearbyUsersUIViewController.swift */,
-				CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */,
+				CBEEC70F260A15B400B357D9 /* RootViewController.swift */,
+				CB5FEAF2260CA91F00871971 /* ChatLogCollectionViewController.swift */,
+				CB3C909A2610DB8000AACE3A /* NearbyUsersViewController.swift */,
+				CB99BD3826171D230096C7AC /* CommandPopUpTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -158,7 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */,
-				CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */,
+				CB99BD3D2617297B0096C7AC /* NetworkMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -355,16 +355,16 @@
 			files = (
 				CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */,
 				CBFEC803262594C30022F4EE /* Constants.swift in Sources */,
-				CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */,
+				CB99BD3E2617297B0096C7AC /* NetworkMessage.swift in Sources */,
 				CB99BD292615D09A0096C7AC /* DataController.swift in Sources */,
-				CB99BD3926171D230096C7AC /* CommandPopUpUITableViewController.swift in Sources */,
-				CBEEC710260A15B400B357D9 /* RootUIViewController.swift in Sources */,
-				CB39B62126242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift in Sources */,
+				CB99BD3926171D230096C7AC /* CommandPopUpTableViewController.swift in Sources */,
+				CBEEC710260A15B400B357D9 /* RootViewController.swift in Sources */,
+				CB39B62126242E1B00D7F4AC /* ImageMessageCollectionViewCell.swift in Sources */,
 				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
 				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,
-				CB5FEAF3260CA91F00871971 /* ChatLogUICollectionViewController.swift in Sources */,
-				CB042226260E22300076561C /* TextMesageUICollectionViewCell.swift in Sources */,
-				CB3C909B2610DB8000AACE3A /* NearbyUsersUIViewController.swift in Sources */,
+				CB5FEAF3260CA91F00871971 /* ChatLogCollectionViewController.swift in Sources */,
+				CB042226260E22300076561C /* TextMesageCollectionViewCell.swift in Sources */,
+				CB3C909B2610DB8000AACE3A /* NearbyUsersViewController.swift in Sources */,
 				CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */,
 				CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */,
 				CB3C90A12610E5A700AACE3A /* NearbyDevise.swift in Sources */,

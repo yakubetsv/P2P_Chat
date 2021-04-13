@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SampleProtocol: Codable {
+struct NetworkMessage: Codable {
     var command: String
     var type: String
     var id: UUID
@@ -28,10 +28,10 @@ struct SampleProtocol: Codable {
 }
 
 extension Data {
-    func decodeJSONToNetworkModel() -> SampleProtocol {
+    func decodeJSONToNetworkModel() -> NetworkMessage {
         let decoder = JSONDecoder()
         do {
-            return try decoder.decode(SampleProtocol.self, from: self)
+            return try decoder.decode(NetworkMessage.self, from: self)
         } catch {
             print(error)
             fatalError("Failed decode")

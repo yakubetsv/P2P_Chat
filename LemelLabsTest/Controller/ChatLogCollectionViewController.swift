@@ -6,7 +6,7 @@ import UIKit
 import CoreData
 import MultipeerConnectivity
 
-class ChatLogUICollectionViewController: UICollectionViewController {
+class ChatLogCollectionViewController: UICollectionViewController {
     private let textCellReuseIdentifier = "TextCell"
     private let imageCellReuseIdentifier = "ImageCell"
     
@@ -64,8 +64,8 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(TextMesageUICollectionViewCell.self, forCellWithReuseIdentifier: textCellReuseIdentifier)
-        collectionView.register(ImageMessageUICollectionViewCell.self, forCellWithReuseIdentifier: imageCellReuseIdentifier)
+        collectionView.register(TextMesageCollectionViewCell.self, forCellWithReuseIdentifier: textCellReuseIdentifier)
+        collectionView.register(ImageMessageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellReuseIdentifier)
         collectionView.backgroundColor = .white
         
         configureUI()
@@ -178,13 +178,13 @@ class ChatLogUICollectionViewController: UICollectionViewController {
     }
     
     private func setupKeyBoardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: ChatLogUICollectionViewController.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: ChatLogUICollectionViewController.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: ChatLogCollectionViewController.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: ChatLogCollectionViewController.keyboardWillHideNotification, object: nil)
     }
     
     private func removeKeyboardObservers() {
-        NotificationCenter.default.removeObserver(self, name: ChatLogUICollectionViewController.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: ChatLogUICollectionViewController.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: ChatLogCollectionViewController.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: ChatLogCollectionViewController.keyboardWillShowNotification, object: nil)
     }
     
     @objc private func handleKeyboardWillShow(notification: Notification) {
@@ -222,9 +222,8 @@ class ChatLogUICollectionViewController: UICollectionViewController {
     }
     
     @objc private func sendButtonPressed() {
-        guard let text = inputTextField.text else { return }
-        
-        guard let context = context else {
+        guard let text = inputTextField.text,
+              let context = context else {
             return
         }
         
@@ -238,7 +237,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         message.isText = true
         message.messageID = UUID()
         
-        let networkMessage = SampleProtocol(command: CommandType.create.rawValue, type: ContentType.text.rawValue, id: message.messageID!, content: data)
+        let networkMessage = NetworkMessage(command: CommandType.create.rawValue, type: ContentType.text.rawValue, id: message.messageID!, content: data)
     
         session.sendNetworkMessage(message: networkMessage)
         
@@ -260,7 +259,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         guard let messageID = changingMessage?.messageID else {
             return
         }
-        let networkMessage = SampleProtocol(command: CommandType.update.rawValue, type: ContentType.text.rawValue, id: messageID, content: data)
+        let networkMessage = NetworkMessage(command: CommandType.update.rawValue, type: ContentType.text.rawValue, id: messageID, content: data)
         session.sendNetworkMessage(message: networkMessage)
 
         print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
@@ -290,7 +289,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
             return
         }
         
-        if let cell = collectionView.cellForItem(at: indexPath) as? TextMesageUICollectionViewCell {
+        if let cell = collectionView.cellForItem(at: indexPath) as? TextMesageCollectionViewCell {
             if !cell.message.isMe {
                 return
             }
@@ -306,7 +305,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                         cell.transform = .identity
                         }
                     
-                    let commandPopUpViewController = CommandPopUpUITableViewController()
+                    let commandPopUpViewController = CommandPopUpTableViewController()
                     commandPopUpViewController.modalPresentationStyle = .popover
                     commandPopUpViewController.preferredContentSize = CGSize(width: 200, height: 87)
                     
@@ -338,7 +337,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                 default:
                     break
             }
-        } else if let cell = collectionView.cellForItem(at: indexPath) as? ImageMessageUICollectionViewCell {
+        } else if let cell = collectionView.cellForItem(at: indexPath) as? ImageMessageCollectionViewCell {
             if !cell.message.isMe {
                 return
             }
@@ -353,7 +352,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                     UIView.animate(withDuration: 0.25) {
                         cell.transform = .identity
                         }
-                    let commandPopUpViewController = CommandPopUpUITableViewController()
+                    let commandPopUpViewController = CommandPopUpTableViewController()
                     commandPopUpViewController.modalPresentationStyle = .popover
                     commandPopUpViewController.preferredContentSize = CGSize(width: 200, height: 87)
                     
@@ -393,7 +392,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
             return
         }
         
-        let deleteMessage = SampleProtocol(command: CommandType.delete.rawValue, type: ContentType.text.rawValue, id: id, content: Data())
+        let deleteMessage = NetworkMessage(command: CommandType.delete.rawValue, type: ContentType.text.rawValue, id: id, content: Data())
         session.sendNetworkMessage(message: deleteMessage)
         context.delete(message)
         dataController?.saveContext()
@@ -441,8 +440,8 @@ class ChatLogUICollectionViewController: UICollectionViewController {
 }
 
 //MARK: -NetworkSessionDelegate
-extension ChatLogUICollectionViewController: NetworkSessionDelegate {
-    func networkSession(_ session: NetworkSession, received: SampleProtocol) {
+extension ChatLogCollectionViewController: NetworkSessionDelegate {
+    func networkSession(_ session: NetworkSession, received: NetworkMessage) {
         switch received.command {
             case CommandType.create.rawValue:
                 let _ = createMessage(received: received)
@@ -470,7 +469,7 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
         //
     }
     
-    private func createMessage(received: SampleProtocol) -> MOMessage {
+    private func createMessage(received: NetworkMessage) -> MOMessage {
         switch received.type {
             case ContentType.text.rawValue:
                 return createTextMessage(received: received)
@@ -481,7 +480,7 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
         }
     }
     
-    private func updateMessage(received: SampleProtocol) {
+    private func updateMessage(received: NetworkMessage) {
         fetchResultController.fetchedObjects?.forEach({ (message) in
             if message.messageID == received.id {
                 message.data = received.content
@@ -491,7 +490,7 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
         dataController?.saveContext()
     }
     
-    private func createTextMessage(received: SampleProtocol) -> MOMessage {
+    private func createTextMessage(received: NetworkMessage) -> MOMessage {
         guard let context = context else {
             fatalError("Can't create context!")
         }
@@ -509,7 +508,7 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
         return message
     }
     
-    private func createImageMessage(received: SampleProtocol) -> MOMessage {
+    private func createImageMessage(received: NetworkMessage) -> MOMessage {
         guard let context = context else {
             fatalError("Can't create context!")
         }
@@ -527,7 +526,7 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
         return message
     }
     
-    private func deleteMessage(received: SampleProtocol) {
+    private func deleteMessage(received: NetworkMessage) {
         guard let context = context else {
             return
         }
@@ -543,20 +542,20 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
 }
 
 //MARK: -CollectionViewDataSource
-extension ChatLogUICollectionViewController {
+extension ChatLogCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let message = self.fetchResultController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
         
         if message.isText {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: textCellReuseIdentifier, for: indexPath) as! TextMesageUICollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: textCellReuseIdentifier, for: indexPath) as! TextMesageCollectionViewCell
             cell.message = message
             cell.configureUI()
             
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellReuseIdentifier, for: indexPath) as! ImageMessageUICollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellReuseIdentifier, for: indexPath) as! ImageMessageCollectionViewCell
             cell.message = message
             cell.configureUI()
             
@@ -574,7 +573,7 @@ extension ChatLogUICollectionViewController {
 }
 
 //MARK: -UICollectionViewDelegateFlowLayout
-extension ChatLogUICollectionViewController: UICollectionViewDelegateFlowLayout {
+extension ChatLogCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 200
        
@@ -610,7 +609,7 @@ extension ChatLogUICollectionViewController: UICollectionViewDelegateFlowLayout 
 }
 
 //MARK: -Image Picker Delegate
-extension ChatLogUICollectionViewController: UIImagePickerControllerDelegate {
+extension ChatLogCollectionViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var message: MOMessage!
         let tempImage: UIImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
@@ -629,13 +628,13 @@ extension ChatLogUICollectionViewController: UIImagePickerControllerDelegate {
             message.isText = false
             let messageID = UUID()
             message.messageID = messageID
-            let networkMessage = SampleProtocol(command: CommandType.create.rawValue, type: ContentType.image.rawValue, id: message.messageID!, content: imageData)
+            let networkMessage = NetworkMessage(command: CommandType.create.rawValue, type: ContentType.image.rawValue, id: message.messageID!, content: imageData)
         
             session.sendNetworkMessage(message: networkMessage)
         } else {
             message = changingMessage
             message.data = imageData
-            let networkMessage = SampleProtocol(command: CommandType.update.rawValue, type: ContentType.image.rawValue, id: message.messageID!, content: imageData)
+            let networkMessage = NetworkMessage(command: CommandType.update.rawValue, type: ContentType.image.rawValue, id: message.messageID!, content: imageData)
         
             session.sendNetworkMessage(message: networkMessage)
         }
@@ -654,7 +653,7 @@ extension ChatLogUICollectionViewController: UIImagePickerControllerDelegate {
 }
 
 //MARK: -FetchResultController Delegate Methods
-extension ChatLogUICollectionViewController: NSFetchedResultsControllerDelegate {
+extension ChatLogCollectionViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.reloadData()
         guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MOMessage) else {
@@ -662,14 +661,10 @@ extension ChatLogUICollectionViewController: NSFetchedResultsControllerDelegate 
         }
         collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
     }
-
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        collectionView.reloadData()
-    }
 }
 
 //MARK: -PopoverPresentationController Delegate Methods
-extension ChatLogUICollectionViewController: UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
+extension ChatLogCollectionViewController: UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none

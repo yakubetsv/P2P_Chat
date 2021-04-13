@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         } else {
             self.window = UIWindow()
-            let rootVC = RootUIViewController()
+            let rootVC = RootViewController()
             let navigationController = UINavigationController(rootViewController: rootVC)
             self.window?.rootViewController = navigationController
             self.window?.makeKeyAndVisible()
