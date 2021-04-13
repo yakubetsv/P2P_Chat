@@ -213,6 +213,7 @@
 		CBFEC7EF26258CEC0022F4EE /* PersistentContainer */ = {
 			isa = PBXGroup;
 			children = (
+				CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */,
 				CB99BD282615D09A0096C7AC /* DataController.swift */,
 			);
 			path = PersistentContainer;
@@ -221,7 +222,6 @@
 		CBFEC8192625B8B80022F4EE /* LemelLablsTestHelpers */ = {
 			isa = PBXGroup;
 			children = (
-				CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */,
 				CBFEC802262594C30022F4EE /* Constants.swift */,
 				CB75BF4926244C36004C6EFA /* UIImage + Resize.swift */,
 			);
