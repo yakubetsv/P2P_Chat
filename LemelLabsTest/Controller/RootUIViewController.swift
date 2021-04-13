@@ -38,8 +38,6 @@ class RootUIViewController: UIViewController {
         return button
     }()
     
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         peerID = MCPeerID(displayName: UIDevice.current.identifierForVendor!.uuidString)
@@ -105,7 +103,6 @@ class RootUIViewController: UIViewController {
                 chatVC.user = self.user
                 chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
                 self.navigationController?.popViewController(animated: true)
-                //nearbyDevicesVC.dismiss(animated: true, completion: nil)
                 self.navigationController?.pushViewController(chatVC, animated: true)
             }
         }

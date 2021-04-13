@@ -10,8 +10,17 @@ class ChatLogUICollectionViewController: UICollectionViewController {
     private let textCellReuseIdentifier = "TextCell"
     private let imageCellReuseIdentifier = "ImageCell"
     
-    var context: NSManagedObjectContext?
-    var dataController: DataController?
+    var context: NSManagedObjectContext? = {
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil
+        }
+        let context = delegate.dataController.managedObjectContext
+        return context
+    }()
+    var dataController: DataController? = {
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
+        return delegate.dataController
+    }()
     var fetchResultController: NSFetchedResultsController<MOMessage>!
     var session: NetworkSession!
     var user: MOUser!
@@ -60,8 +69,6 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = .white
         
         configureUI()
-        context = getContext()
-        dataController = getDataController()
         chat = fetchChatForUsers(firstUser: user, secondUser: companionUser!)
         
         initializeFetchResultController()
@@ -78,20 +85,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
     
     deinit {
         session.stopSession()
-    }
-    
-    private func getDataController() -> DataController? {
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
-        return delegate.dataController
-    }
-    
-    private func getContext() -> NSManagedObjectContext? {
-    
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            return nil
-        }
-        let context = delegate.dataController.managedObjectContext
-        return context
+        removeKeyboardObservers()
     }
     
     private func initializeFetchResultController() {
@@ -117,7 +111,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         }
     }
     
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         
         view.addSubview(containerView)
@@ -177,12 +171,17 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         setupKeyBoardObservers()
     }
     
-    func setupKeyBoardObservers() {
+    private func setupKeyBoardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: ChatLogUICollectionViewController.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: ChatLogUICollectionViewController.keyboardWillHideNotification, object: nil)
     }
     
-    @objc func handleKeyboardWillShow(notification: Notification) {
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self, name: ChatLogUICollectionViewController.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: ChatLogUICollectionViewController.keyboardWillShowNotification, object: nil)
+    }
+    
+    @objc private func handleKeyboardWillShow(notification: Notification) {
         let info: NSDictionary = notification.userInfo! as NSDictionary
         let keyboardFrame = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size
         let keyboardDuration = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double)
@@ -197,7 +196,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         }
     }
     
-    @objc func handleKeyboardWillHide(notification: Notification) {
+    @objc private func handleKeyboardWillHide(notification: Notification) {
         let info: NSDictionary = notification.userInfo! as NSDictionary
         let keyboardDuration = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double)
         
@@ -212,11 +211,11 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         }
     }
     
-    @objc func hideKeyboard() {
+    @objc private func hideKeyboard() {
         view.endEditing(true)
     }
     
-    @objc func sendButtonPressed() {
+    @objc private func sendButtonPressed() {
         guard let text = inputTextField.text else { return }
         
         guard let context = context else {
@@ -246,7 +245,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         
     }
     
-    @objc func editButtonPressed() {
+    @objc private func editButtonPressed() {
         guard let text = inputTextField.text else {
             return
         }
@@ -260,7 +259,6 @@ class ChatLogUICollectionViewController: UICollectionViewController {
 
         print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
 
-
         changingMessage = nil
 
         sendButton.removeTarget(self, action: #selector(editButtonPressed), for: .allEvents)
@@ -272,7 +270,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
     
     }
     
-    @objc func imagePickerButtonPressed() {
+    @objc private func imagePickerButtonPressed() {
         let imagePickerViewController = UIImagePickerController()
         imagePickerViewController.delegate = self
         imagePickerViewController.allowsEditing = true
@@ -280,20 +278,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         present(imagePickerViewController, animated: true, completion: nil)
     }
     
-    private func deleteMessage(message: MOMessage) {
-        guard let context = context else {
-            return
-        }
-        guard let id = message.messageID else {
-            return
-        }
-        let deleteMessage = SampleProtocol(command: CommandType.delete.rawValue, type: ContentType.text.rawValue, id: id, content: Data())
-        session.sendNetworkMessage(message: deleteMessage)
-        context.delete(message)
-        dataController?.saveContext()
-    }
-    
-    @objc func longPressHandler(gesture: UILongPressGestureRecognizer) {
+    @objc private func longPressHandler(gesture: UILongPressGestureRecognizer) {
         let p = gesture.location(in: self.collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: p) else {
             return
@@ -396,6 +381,18 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         }
     }
     
+    private func deleteMessage(message: MOMessage) {
+        guard let context = context,
+              let id = message.messageID else {
+            return
+        }
+        
+        let deleteMessage = SampleProtocol(command: CommandType.delete.rawValue, type: ContentType.text.rawValue, id: id, content: Data())
+        session.sendNetworkMessage(message: deleteMessage)
+        context.delete(message)
+        dataController?.saveContext()
+    }
+    
     func fetchChatForUsers(firstUser: MOUser, secondUser: MOUser) -> MOChat? {
         guard let context = context else {
             return nil
@@ -430,7 +427,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
 
         chatModel.addToUsers([firstUser, secondUser])
 
-        try? context.save()
+        dataController?.saveContext()
         print("Chat for \(firstUser.userName!) and \(secondUser.userName!) was created!")
 
         return chatModel

@@ -51,7 +51,6 @@ class ImageMessageUICollectionViewCell: UICollectionViewCell {
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         bubbleView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
-        
         if message.isMe {
             bubbleView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
             bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -Constants.indent).isActive = true
