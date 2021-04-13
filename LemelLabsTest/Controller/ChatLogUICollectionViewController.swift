@@ -12,10 +12,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
     
     var context: NSManagedObjectContext?
     var dataController: DataController?
-    var isEditingImage = false
     var fetchResultController: NSFetchedResultsController<MOMessage>!
-    var containerViewBottomConstraint: NSLayoutConstraint?
-    var containerViewHeightConstraing: NSLayoutConstraint?
     var session: NetworkSession!
     var user: MOUser!
     var companionUser: MOUser? {
@@ -29,6 +26,9 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         }
     }
     var changingMessage: MOMessage?
+    var isEditingImage = false
+    var containerViewBottomConstraint: NSLayoutConstraint?
+    var containerViewHeightConstraing: NSLayoutConstraint?
     
     let inputTextField: UITextField = {
         let inputTextFiled = UITextField()
@@ -129,7 +129,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         
         let window = UIApplication.shared.keyWindow
         let bottom = window?.safeAreaInsets.bottom
-        containerViewHeightConstraing = containerView.heightAnchor.constraint(equalToConstant: 40 + bottom!)
+        containerViewHeightConstraing = containerView.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight + bottom!)
         containerViewHeightConstraing?.isActive = true
         
         sendButton.setTitle("Send", for: .normal)
@@ -139,9 +139,8 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         
         sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
         sendButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-//        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        sendButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
         
         let imagePickerButton = UIButton(type: .infoDark)
         imagePickerButton.translatesAutoresizingMaskIntoConstraints = false
@@ -151,17 +150,15 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         
         imagePickerButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
         imagePickerButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-//        imagePickerButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        imagePickerButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        imagePickerButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        imagePickerButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
+        imagePickerButton.widthAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
         
         containerView.addSubview(inputTextField)
         
         inputTextField.leftAnchor.constraint(equalTo: imagePickerButton.rightAnchor, constant: 8).isActive = true
-//        inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         inputTextField.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-        inputTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        inputTextField.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
         
         let separator = UIView()
         separator.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
@@ -175,7 +172,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         collectionView.alwaysBounceVertical = true
-        collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 48, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: Constants.indent, left: 0, bottom: Constants.containerViewHeight + Constants.indent, right: 0)
         
         setupKeyBoardObservers()
     }
@@ -208,7 +205,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         
         let window = UIApplication.shared.keyWindow
         let bottom = window?.safeAreaInsets.bottom
-        containerViewHeightConstraing?.constant = 40 + bottom!
+        containerViewHeightConstraing?.constant = Constants.containerViewHeight + bottom!
         
         UIView.animate(withDuration: keyboardDuration) {
             self.view.layoutIfNeeded()
@@ -236,7 +233,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         message.isText = true
         message.messageID = UUID()
         
-        let networkMessage = SampleProtocol(command: CommandType.Create.rawValue, type: ContentType.Text.rawValue, id: message.messageID!, content: data)
+        let networkMessage = SampleProtocol(command: CommandType.create.rawValue, type: ContentType.text.rawValue, id: message.messageID!, content: data)
     
         session.sendNetworkMessage(message: networkMessage)
         
@@ -258,7 +255,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         guard let messageID = changingMessage?.messageID else {
             return
         }
-        let networkMessage = SampleProtocol(command: CommandType.Update.rawValue, type: ContentType.Text.rawValue, id: messageID, content: data)
+        let networkMessage = SampleProtocol(command: CommandType.update.rawValue, type: ContentType.text.rawValue, id: messageID, content: data)
         session.sendNetworkMessage(message: networkMessage)
 
         print("Сообщение изменено: \"\(String(data: (changingMessage?.data)!, encoding: .utf8)!)\"\nПользователю \(changingMessage!.user!.userName!)\nObjectID: \(changingMessage!.objectID)")
@@ -267,7 +264,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         changingMessage = nil
 
         sendButton.removeTarget(self, action: #selector(editButtonPressed), for: .allEvents)
-        sendButton.setTitle("Send", for: .normal)
+        sendButton.setTitle(NSLocalizedString("Send", comment: "Send button"), for: .normal)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
         inputTextField.text = nil
 
@@ -290,7 +287,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         guard let id = message.messageID else {
             return
         }
-        let deleteMessage = SampleProtocol(command: CommandType.Delete.rawValue, type: ContentType.Text.rawValue, id: id, content: Data())
+        let deleteMessage = SampleProtocol(command: CommandType.delete.rawValue, type: ContentType.text.rawValue, id: id, content: Data())
         session.sendNetworkMessage(message: deleteMessage)
         context.delete(message)
         dataController?.saveContext()
@@ -331,7 +328,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                     present(commandPopUpViewController, animated: true, completion: nil)
                     
                     commandPopUpViewController.complition = { [self] (command: CommandType) in
-                        if command == CommandType.Update {
+                        if command == CommandType.update {
                             self.changingMessage = self.fetchResultController.object(at: indexPath)
 
                             let text = String(data: self.changingMessage!.data!, encoding: .utf8)
@@ -339,10 +336,10 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                             
                             DispatchQueue.main.async {
                                 self.sendButton.removeTarget(self, action: #selector(self.sendButtonPressed), for: .allEvents)
-                                self.sendButton.setTitle("Edit", for: .normal)
+                                self.sendButton.setTitle(NSLocalizedString("Edit", comment: "Edit button"), for: .normal)
                                 self.sendButton.addTarget(self, action: #selector(self.editButtonPressed), for: .touchUpInside)
                             }
-                        } else if command == CommandType.Delete {
+                        } else if command == CommandType.delete {
                             let deletingMessage = self.fetchResultController.object(at: indexPath)
                             deleteMessage(message: deletingMessage)
                         }
@@ -378,8 +375,7 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                     present(commandPopUpViewController, animated: true, completion: nil)
                     
                     commandPopUpViewController.complition = { [self] (command: CommandType) in
-                        if command == CommandType.Update {
-                            
+                        if command == CommandType.update {
                             changingMessage = fetchResultController.object(at: indexPath)
                             isEditingImage = true
                             let imagePickerViewController = UIImagePickerController()
@@ -389,13 +385,11 @@ class ChatLogUICollectionViewController: UICollectionViewController {
                             DispatchQueue.main.async {
                                 present(imagePickerViewController, animated: true, completion: nil)
                             }
-                        } else if command == CommandType.Delete {
+                        } else if command == CommandType.delete {
                             let deletingMessage = self.fetchResultController.object(at: indexPath)
                             deleteMessage(message: deletingMessage)
                         }
                     }
-                    
-                    
                 default:
                     break
             }
@@ -447,11 +441,11 @@ class ChatLogUICollectionViewController: UICollectionViewController {
 extension ChatLogUICollectionViewController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, received: SampleProtocol) {
         switch received.command {
-            case CommandType.Create.rawValue:
+            case CommandType.create.rawValue:
                 let _ = createMessage(received: received)
-            case CommandType.Update.rawValue:
+            case CommandType.update.rawValue:
                 updateMessage(received: received)
-            case CommandType.Delete.rawValue:
+            case CommandType.delete.rawValue:
                 deleteMessage(received: received)
             default:
                 break
@@ -475,9 +469,9 @@ extension ChatLogUICollectionViewController: NetworkSessionDelegate {
     
     private func createMessage(received: SampleProtocol) -> MOMessage {
         switch received.type {
-            case ContentType.Text.rawValue:
+            case ContentType.text.rawValue:
                 return createTextMessage(received: received)
-            case ContentType.Image.rawValue:
+            case ContentType.image.rawValue:
                 return createImageMessage(received: received)
             default:
                 fatalError("Can't create message")
@@ -632,13 +626,13 @@ extension ChatLogUICollectionViewController: UIImagePickerControllerDelegate {
             message.isText = false
             let messageID = UUID()
             message.messageID = messageID
-            let networkMessage = SampleProtocol(command: CommandType.Create.rawValue, type: ContentType.Image.rawValue, id: message.messageID!, content: imageData)
+            let networkMessage = SampleProtocol(command: CommandType.create.rawValue, type: ContentType.image.rawValue, id: message.messageID!, content: imageData)
         
             session.sendNetworkMessage(message: networkMessage)
         } else {
             message = changingMessage
             message.data = imageData
-            let networkMessage = SampleProtocol(command: CommandType.Update.rawValue, type: ContentType.Image.rawValue, id: message.messageID!, content: imageData)
+            let networkMessage = SampleProtocol(command: CommandType.update.rawValue, type: ContentType.image.rawValue, id: message.messageID!, content: imageData)
         
             session.sendNetworkMessage(message: networkMessage)
         }
@@ -657,7 +651,7 @@ extension ChatLogUICollectionViewController: UIImagePickerControllerDelegate {
 }
 
 //MARK: -FetchResultController Delegate Methods
-extension ChatLogUICollectionViewController: NSFetchedResultsControllerDelegate{
+extension ChatLogUICollectionViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.reloadData()
         guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MOMessage) else {

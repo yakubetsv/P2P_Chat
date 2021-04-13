@@ -10,14 +10,14 @@ struct ServiceType {
 }
 
 enum ContentType: String {
-    case Text
-    case Image
+    case text
+    case image
 }
 
 enum CommandType: String {
-    case Create
-    case Update
-    case Delete
+    case create
+    case update
+    case delete
 }
 
 protocol NetworkSessionDelegate: class {

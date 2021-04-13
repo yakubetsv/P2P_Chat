@@ -8,8 +8,8 @@
 import UIKit
 
 class TextMesageUICollectionViewCell: UICollectionViewCell {
-    
     public weak var message: MOMessage!
+    private var bubbleViewWidth: NSLayoutConstraint?
     
     private let textField: UITextView = {
         let field = UITextView()
@@ -35,22 +35,14 @@ class TextMesageUICollectionViewCell: UICollectionViewCell {
         addSubview(textField)
     }
 
-    private var bubbleViewWidth: NSLayoutConstraint?
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     public func configureUI() {
-        guard let message = message else {
-            return
-        }
-        
-        guard let data = message.data else {
-            return
-        }
-        
-        guard let text = String(data: data, encoding: .utf8) else {
+        guard let message = message,
+              let data = message.data,
+              let text = String(data: data, encoding: .utf8) else {
             return
         }
         
@@ -58,24 +50,22 @@ class TextMesageUICollectionViewCell: UICollectionViewCell {
         bubbleView.constraints.forEach { bubbleView.removeConstraint($0) }
         
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        let width = estimatedFrameForText(text: text).width + 11
+        let width = estimatedFrameForText(text: text).width + Constants.deltaSize
         
-        bubbleViewWidth = nil
         bubbleViewWidth = bubbleView.widthAnchor.constraint(equalToConstant: width)
         bubbleViewWidth?.isActive = true
         
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        textField.text = text
         
         if message.isMe {
             textField.textColor = .white
-            textField.text = text
             bubbleView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-            bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+            bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -Constants.indent).isActive = true
         } else {
             textField.textColor = .black
-            textField.text = text
             bubbleView.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
-            bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+            bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: Constants.indent).isActive = true
         }
         
         textField.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true

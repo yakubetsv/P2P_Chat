@@ -9,7 +9,7 @@ import UIKit
 
 class CommandPopUpUITableViewController: UITableViewController {
     let cellIdentifier = "DefaultCell"
-    let commands = [CommandType.Update, CommandType.Delete]
+    let commands = [CommandType.update, CommandType.delete]
     var complition: ((CommandType) -> ())?
     
     override func viewDidLoad() {

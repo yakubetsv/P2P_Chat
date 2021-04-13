@@ -9,14 +9,13 @@ import UIKit
 
 class ImageMessageUICollectionViewCell: UICollectionViewCell {
     public weak var message: MOMessage!
+    private var bubbleViewWidth: NSLayoutConstraint?
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 18
         imageView.clipsToBounds = true
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         return imageView
     }()
     
@@ -33,23 +32,15 @@ class ImageMessageUICollectionViewCell: UICollectionViewCell {
         addSubview(bubbleView)
         bubbleView.addSubview(imageView)
     }
-
-    private var bubbleViewWidth: NSLayoutConstraint?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     public func configureUI() {
-        guard let message = message else {
-            return
-        }
-        
-        guard let data = message.data else {
-            return
-        }
-        
-        guard let image = UIImage(data: data) else {
+        guard let message = message,
+              let data = message.data,
+              let image = UIImage(data: data) else {
             return
         }
         
@@ -63,10 +54,10 @@ class ImageMessageUICollectionViewCell: UICollectionViewCell {
         
         if message.isMe {
             bubbleView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-            bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+            bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -Constants.indent).isActive = true
         } else {
             bubbleView.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
-            bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+            bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: Constants.indent).isActive = true
         }
         
         imageView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
@@ -76,10 +67,5 @@ class ImageMessageUICollectionViewCell: UICollectionViewCell {
         
         imageView.image = image
         imageView.contentMode = .scaleToFill
-        
-    }
-    
-    @objc private func handleZoomTap() {
-        print("Zoom is tapped")
     }
 }
