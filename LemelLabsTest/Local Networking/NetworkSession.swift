@@ -82,29 +82,6 @@ class NetworkSession: NSObject {
         
     }
     
-//    func sendEdit(data: Data, toPeer: MCPeerID, type: ContentType, messageID: String) throws {
-//        let fileName = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
-//        try data.write(to: fileName)
-//
-//        switch type {
-//            case .Text:
-//                let url = type.rawValue.appendingFormat("/%@", CommandType.Update.rawValue).appendingFormat("/%@", messageID)
-//                session.sendResource(at: fileName, withName: url, toPeer: toPeer) { (error) in
-//                    if error != nil {
-//                        return
-//                    }
-//
-//                    do {
-//                        try FileManager.default.removeItem(at: fileName)
-//                    } catch {
-//                        print("Removing failed")
-//                    }
-//                }
-//            case .Image:
-//                break
-//        }
-//    }
-    
     func stopSession() {
         session.disconnect()
     }
