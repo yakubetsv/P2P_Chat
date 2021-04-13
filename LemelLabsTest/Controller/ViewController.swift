@@ -10,7 +10,7 @@ import MultipeerConnectivity
 import CoreData
 
 class ViewController: UIViewController {
-    var user: UserMO?
+    var user: MOUser?
     
     let dataController: DataController = {
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -51,8 +51,8 @@ class ViewController: UIViewController {
 
     }
     
-    func fetchUser(peerID: MCPeerID) -> UserMO? {
-        let fetchRequst = NSFetchRequest<UserMO>(entityName: "User")
+    func fetchUser(peerID: MCPeerID) -> MOUser? {
+        let fetchRequst = NSFetchRequest<MOUser>(entityName: "User")
         fetchRequst.predicate = NSPredicate.init(format: "userName == %@", peerID.displayName)
         
         do {
@@ -74,10 +74,10 @@ class ViewController: UIViewController {
         return NSEntityDescription.entity(forEntityName: name, in: dataController.managedObjectContext)!
     }
 
-    func createUser(peerID: MCPeerID) -> UserMO? {
+    func createUser(peerID: MCPeerID) -> MOUser? {
 
         let entityDesc = entityForName(entityName: "User")
-        let entityModel = UserMO(entity: entityDesc, insertInto: dataController.managedObjectContext)
+        let entityModel = MOUser(entity: entityDesc, insertInto: dataController.managedObjectContext)
 
         entityModel.userName = peerID.displayName
 
@@ -96,6 +96,7 @@ class ViewController: UIViewController {
     
     @objc func joinHost() {
         let nearbyDevicesVC = NearbyUsersController()
+        nearbyDevicesVC.modalPresentationStyle = .currentContext
         nearbyDevicesVC.peerID = peerID
         nearbyDevicesVC.complition = { (session: NetworkSession) in
             DispatchQueue.main.async {
@@ -103,15 +104,12 @@ class ViewController: UIViewController {
                 chatVC.session = session
                 chatVC.user = self.user
                 chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
-                nearbyDevicesVC.dismiss(animated: true, completion: nil)
+                self.navigationController?.popViewController(animated: true)
+                //nearbyDevicesVC.dismiss(animated: true, completion: nil)
                 self.navigationController?.pushViewController(chatVC, animated: true)
             }
         }
-        present(nearbyDevicesVC, animated: true, completion: nil)
-    }
-    
-    @objc func handleOpenChats() {
-        
+        navigationController?.pushViewController(nearbyDevicesVC, animated: true)
     }
     
     private func configureUI() {
@@ -135,7 +133,6 @@ extension ViewController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, received: SampleProtocol) {
         //
     }
-    
     
     func networkSession(_ stop: NetworkSession) {
         //

@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
-    public weak var message: MessageMO!
+    public weak var message: MOMessage!
     
     let imageView: UIImageView = {
         let imageView = UIImageView()

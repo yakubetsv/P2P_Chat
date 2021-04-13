@@ -16,15 +16,15 @@ class NearbyUsersController: UIViewController {
     
     var complition: ((NetworkSession) -> ())?
     
-    let tableView: UITableView = {
-       let table = UITableView()
+    private let tableView: UITableView = {
+        let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .white
         view.addSubview(tableView)
         
         tableView.delegate = self
@@ -36,19 +36,15 @@ class NearbyUsersController: UIViewController {
         browser.delegate = self
         browser.start()
         
-        configureTableViewUI()
+        configureUI()
     }
     
-    func configureTableViewUI() {
+    func configureUI() {
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
         tableView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
-        
-        tableView.layer.cornerRadius = 10
-        tableView.clipsToBounds = true
     }
-    
 }
 
 //MARK: -

@@ -12,7 +12,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.reloadData()
-        guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MessageMO) else {
+        guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MOMessage) else {
             return
         }
         collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
@@ -29,22 +29,22 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     var context: NSManagedObjectContext?
     var dataController: DataController?
     var isEditingImage = false
-    var fetchResultController: NSFetchedResultsController<MessageMO>!
+    var fetchResultController: NSFetchedResultsController<MOMessage>!
     var containerViewBottomConstraint: NSLayoutConstraint?
     var containerViewHeightConstraing: NSLayoutConstraint?
     var session: NetworkSession!
-    var user: UserMO!
-    var companionUser: UserMO? {
+    var user: MOUser!
+    var companionUser: MOUser? {
         didSet {
             navigationItem.title = companionUser?.userName
         }
     }
-    var chat: ChatMO? {
+    var chat: MOChat? {
         didSet {
             collectionView.reloadData()
         }
     }
-    var changingMessage: MessageMO?
+    var changingMessage: MOMessage?
     
     let inputTextField: UITextField = {
         let inputTextFiled = UITextField()
@@ -118,7 +118,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
             return
         }
         
-        let fetchRequest = NSFetchRequest<MessageMO>(entityName: "Message")
+        let fetchRequest = NSFetchRequest<MOMessage>(entityName: "Message")
         let predicate = NSPredicate(format: "chat == %@", chat)
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateStamp", ascending: true)]
@@ -243,7 +243,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         }
         
         let data = Data(text.utf8)
-        let message = MessageMO(context: context)
+        let message = MOMessage(context: context)
         message.data = data
         message.chat = chat
         message.isMe = true
@@ -299,7 +299,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         present(imagePickerViewController, animated: true, completion: nil)
     }
     
-    private func deleteMessage(message: MessageMO) {
+    private func deleteMessage(message: MOMessage) {
         guard let context = context else {
             return
         }
@@ -418,12 +418,12 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         }
     }
     
-    func fetchChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO? {
+    func fetchChatForUsers(firstUser: MOUser, secondUser: MOUser) -> MOChat? {
         guard let context = context else {
             return nil
         }
         
-        let fetchReques = NSFetchRequest<ChatMO>(entityName: "Chat")
+        let fetchReques = NSFetchRequest<MOChat>(entityName: "Chat")
 
         do {
             let chats = try context.fetch(fetchReques)
@@ -440,12 +440,12 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         }
     }
 
-    func createChatForUsers(firstUser: UserMO, secondUser: UserMO) -> ChatMO? {
+    func createChatForUsers(firstUser: MOUser, secondUser: MOUser) -> MOChat? {
         guard let context = context else {
             return nil
         }
         let entityDesc = NSEntityDescription.entity(forEntityName: "Chat", in: context)
-        let chatModel = ChatMO(entity: entityDesc!, insertInto: context)
+        let chatModel = MOChat(entity: entityDesc!, insertInto: context)
         
         firstUser.addToChats(chatModel)
         secondUser.addToChats(chatModel)
@@ -489,7 +489,7 @@ extension ChatController: NetworkSessionDelegate {
         //
     }
     
-    private func createMessage(received: SampleProtocol) -> MessageMO {
+    private func createMessage(received: SampleProtocol) -> MOMessage {
         switch received.type {
             case ContentType.Text.rawValue:
                 return createTextMessage(received: received)
@@ -510,12 +510,12 @@ extension ChatController: NetworkSessionDelegate {
         dataController?.saveContext()
     }
     
-    private func createTextMessage(received: SampleProtocol) -> MessageMO {
+    private func createTextMessage(received: SampleProtocol) -> MOMessage {
         guard let context = context else {
             fatalError("Can't create context!")
         }
         
-        let message = MessageMO(context: context)
+        let message = MOMessage(context: context)
         message.chat = chat
         message.dateStamp = Date()
         message.isMe = false
@@ -528,12 +528,12 @@ extension ChatController: NetworkSessionDelegate {
         return message
     }
     
-    private func createImageMessage(received: SampleProtocol) -> MessageMO {
+    private func createImageMessage(received: SampleProtocol) -> MOMessage {
         guard let context = context else {
             fatalError("Can't create context!")
         }
         
-        let message = MessageMO(context: context)
+        let message = MOMessage(context: context)
         message.chat = chat
         message.dateStamp = Date()
         message.isMe = false
@@ -552,7 +552,7 @@ extension ChatController: NetworkSessionDelegate {
         }
         let id = received.id
         
-        fetchResultController.fetchedObjects?.forEach({ (message: MessageMO) in
+        fetchResultController.fetchedObjects?.forEach({ (message: MOMessage) in
             if message.messageID == id {
                 context.delete(message)
                 dataController?.saveContext()
@@ -631,7 +631,7 @@ extension ChatController: UICollectionViewDelegateFlowLayout {
 //MARK: -Image Picker Delegate
 extension ChatController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var message: MessageMO!
+        var message: MOMessage!
         let tempImage: UIImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
         guard let context = context,
               let imageData = tempImage.jpegData(compressionQuality: 0.25) else {
@@ -639,7 +639,7 @@ extension ChatController: UIImagePickerControllerDelegate {
         }
         
         if !isEditingImage {
-            message = MessageMO(context: context)
+            message = MOMessage(context: context)
             message.data = imageData
             message.chat = chat
             message.isMe = true

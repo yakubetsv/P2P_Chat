@@ -137,7 +137,6 @@
 				CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */,
 				CBEEC717260A15B600B357D9 /* Assets.xcassets */,
 				CBEEC711260A15B400B357D9 /* Main.storyboard */,
-				CB99BD282615D09A0096C7AC /* DataController.swift */,
 				CB99BD4726172B310096C7AC /* DataExtension.swift */,
 				CB75BF4926244C36004C6EFA /* UIImage + resize.swift */,
 			);
@@ -187,6 +186,7 @@
 		CBEEC70A260A15B400B357D9 /* LemelLabsTest */ = {
 			isa = PBXGroup;
 			children = (
+				CBFEC7EF26258CEC0022F4EE /* Core */,
 				CBE8E73726130E2A000166BB /* Model */,
 				CB042224260E21BB0076561C /* View */,
 				CBAA05AA260B582B009CDEB7 /* Controller */,
@@ -213,6 +213,14 @@
 				CBEEC732260A15B700B357D9 /* Info.plist */,
 			);
 			path = LemelLabsTestUITests;
+			sourceTree = "<group>";
+		};
+		CBFEC7EF26258CEC0022F4EE /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CB99BD282615D09A0096C7AC /* DataController.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -9,7 +9,7 @@ import UIKit
 
 class TextCell: UICollectionViewCell {
     
-    public weak var message: MessageMO!
+    public weak var message: MOMessage!
     
     private let textField: UITextView = {
         let field = UITextView()
