@@ -136,16 +136,22 @@ class ChatLogUICollectionViewController: UICollectionViewController {
         sendButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
         
-        let imagePickerButton = UIButton(type: .infoDark)
+        let imagePickerButton = UIButton()
+        
+        guard let image = UIImage(named: "image-gallery") else {
+            return
+        }
+        
+        imagePickerButton.setImage(image, for: .normal)
         imagePickerButton.translatesAutoresizingMaskIntoConstraints = false
         imagePickerButton.addTarget(self, action: #selector(imagePickerButtonPressed), for: .touchUpInside)
         
         containerView.addSubview(imagePickerButton)
         
         imagePickerButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
-        imagePickerButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        imagePickerButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
-        imagePickerButton.widthAnchor.constraint(equalToConstant: Constants.containerViewHeight).isActive = true
+        imagePickerButton.centerYAnchor.constraint(equalTo: sendButton.centerYAnchor).isActive = true
+        imagePickerButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        imagePickerButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
         containerView.addSubview(inputTextField)
         

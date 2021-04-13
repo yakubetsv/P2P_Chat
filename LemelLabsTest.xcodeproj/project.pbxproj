@@ -18,7 +18,6 @@
 		CB99BD292615D09A0096C7AC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD282615D09A0096C7AC /* DataController.swift */; };
 		CB99BD3926171D230096C7AC /* CommandPopUpUITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */; };
 		CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */; };
-		CB99BD4826172B310096C7AC /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD4726172B310096C7AC /* DataExtension.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
 		CBEEC710260A15B400B357D9 /* RootUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */; };
@@ -60,7 +59,6 @@
 		CB99BD282615D09A0096C7AC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPopUpUITableViewController.swift; sourceTree = "<group>"; };
 		CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleProtocol.swift; sourceTree = "<group>"; };
-		CB99BD4726172B310096C7AC /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 				CBEEC719260A15B600B357D9 /* LaunchScreen.storyboard */,
 				CBEEC717260A15B600B357D9 /* Assets.xcassets */,
 				CBEEC711260A15B400B357D9 /* Main.storyboard */,
-				CB99BD4726172B310096C7AC /* DataExtension.swift */,
 				CB75BF4926244C36004C6EFA /* UIImage + resize.swift */,
 				CBFEC802262594C30022F4EE /* Constants.swift */,
 			);
@@ -360,7 +357,6 @@
 				CBFEC803262594C30022F4EE /* Constants.swift in Sources */,
 				CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */,
 				CB99BD292615D09A0096C7AC /* DataController.swift in Sources */,
-				CB99BD4826172B310096C7AC /* DataExtension.swift in Sources */,
 				CB99BD3926171D230096C7AC /* CommandPopUpUITableViewController.swift in Sources */,
 				CBEEC710260A15B400B357D9 /* RootUIViewController.swift in Sources */,
 				CB39B62126242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift in Sources */,
