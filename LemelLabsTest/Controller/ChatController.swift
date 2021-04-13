@@ -141,10 +141,13 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: containerView.frame.height + 1 + 10 + 30, right: 0)
         
         containerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         containerViewBottomConstraint?.isActive = true
         containerView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        let window = UIApplication.shared.keyWindow
+        let bottom = window?.safeAreaInsets.bottom
+        containerView.heightAnchor.constraint(equalToConstant: 40 + bottom!).isActive = true
         
         sendButton.setTitle("Send", for: .normal)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
@@ -152,9 +155,10 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         containerView.addSubview(sendButton)
         
         sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        sendButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+//        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         let imagePickerButton = UIButton(type: .infoDark)
         imagePickerButton.translatesAutoresizingMaskIntoConstraints = false
@@ -163,17 +167,18 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         containerView.addSubview(imagePickerButton)
         
         imagePickerButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
-        imagePickerButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        imagePickerButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        imagePickerButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+//        imagePickerButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        imagePickerButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         imagePickerButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
         
         containerView.addSubview(inputTextField)
         
         inputTextField.leftAnchor.constraint(equalTo: imagePickerButton.rightAnchor, constant: 8).isActive = true
-        inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+//        inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        inputTextField.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-        inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        inputTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         let separator = UIView()
         separator.backgroundColor = #colorLiteral(red: 0.9159229011, green: 0.9159229011, blue: 0.9159229011, alpha: 1)
