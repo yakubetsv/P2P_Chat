@@ -31,6 +31,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     var isEditingImage = false
     var fetchResultController: NSFetchedResultsController<MessageMO>!
     var containerViewBottomConstraint: NSLayoutConstraint?
+    var containerViewHeightConstraing: NSLayoutConstraint?
     var session: NetworkSession!
     var user: UserMO!
     var companionUser: UserMO? {
@@ -137,9 +138,6 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         view.addSubview(containerView)
 
-        collectionView.alwaysBounceVertical = true
-        collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: containerView.frame.height + 1 + 10 + 30, right: 0)
-        
         containerView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         containerViewBottomConstraint?.isActive = true
@@ -147,7 +145,8 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         let window = UIApplication.shared.keyWindow
         let bottom = window?.safeAreaInsets.bottom
-        containerView.heightAnchor.constraint(equalToConstant: 40 + bottom!).isActive = true
+        containerViewHeightConstraing = containerView.heightAnchor.constraint(equalToConstant: 40 + bottom!)
+        containerViewHeightConstraing?.isActive = true
         
         sendButton.setTitle("Send", for: .normal)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
@@ -191,6 +190,9 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         separator.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        collectionView.alwaysBounceVertical = true
+        collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 48, right: 0)
+        
         setupKeyBoardObservers()
     }
     
@@ -204,7 +206,10 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         let keyboardFrame = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size
         let keyboardDuration = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double)
         
-        containerViewBottomConstraint?.constant = -(keyboardFrame!.height - view.safeAreaInsets.bottom)
+        containerViewBottomConstraint?.constant = -(keyboardFrame!.height)
+        let window = UIApplication.shared.keyWindow
+        let bottom = window?.safeAreaInsets.bottom
+        containerViewHeightConstraing?.constant = containerViewHeightConstraing!.constant - bottom!
         
         UIView.animate(withDuration: keyboardDuration) {
             self.view.layoutIfNeeded()
@@ -216,6 +221,10 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         let keyboardDuration = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double)
         
         containerViewBottomConstraint?.constant = 0
+        
+        let window = UIApplication.shared.keyWindow
+        let bottom = window?.safeAreaInsets.bottom
+        containerViewHeightConstraing?.constant = 40 + bottom!
         
         UIView.animate(withDuration: keyboardDuration) {
             self.view.layoutIfNeeded()
