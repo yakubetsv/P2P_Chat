@@ -6,25 +6,9 @@ import UIKit
 import CoreData
 import MultipeerConnectivity
 
-class ChatController: UICollectionViewController, NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
+class ChatLogUICollectionViewController: UICollectionViewController {
     private let textCellReuseIdentifier = "TextCell"
     private let imageCellReuseIdentifier = "ImageCell"
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionView.reloadData()
-        guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MOMessage) else {
-            return
-        }
-        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        collectionView.reloadData()
-    }
     
     var context: NSManagedObjectContext?
     var dataController: DataController?
@@ -71,8 +55,8 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(TextCell.self, forCellWithReuseIdentifier: textCellReuseIdentifier)
-        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellReuseIdentifier)
+        collectionView.register(TextMesageUICollectionViewCell.self, forCellWithReuseIdentifier: textCellReuseIdentifier)
+        collectionView.register(ImageMessageUICollectionViewCell.self, forCellWithReuseIdentifier: imageCellReuseIdentifier)
         collectionView.backgroundColor = .white
         
         configureUI()
@@ -197,8 +181,8 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
     }
     
     func setupKeyBoardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: ChatController.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: ChatController.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: ChatLogUICollectionViewController.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: ChatLogUICollectionViewController.keyboardWillHideNotification, object: nil)
     }
     
     @objc func handleKeyboardWillShow(notification: Notification) {
@@ -318,7 +302,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
             return
         }
         
-        if let cell = collectionView.cellForItem(at: indexPath) as? TextCell {
+        if let cell = collectionView.cellForItem(at: indexPath) as? TextMesageUICollectionViewCell {
             if !cell.message.isMe {
                 return
             }
@@ -334,7 +318,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                         cell.transform = .identity
                         }
                     
-                    let commandPopUpViewController = CommandPopUpController()
+                    let commandPopUpViewController = CommandPopUpUITableViewController()
                     commandPopUpViewController.modalPresentationStyle = .popover
                     commandPopUpViewController.preferredContentSize = CGSize(width: 200, height: 87)
                     
@@ -366,7 +350,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                 default:
                     break
             }
-        } else if let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell {
+        } else if let cell = collectionView.cellForItem(at: indexPath) as? ImageMessageUICollectionViewCell {
             if !cell.message.isMe {
                 return
             }
@@ -381,7 +365,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
                     UIView.animate(withDuration: 0.25) {
                         cell.transform = .identity
                         }
-                    let commandPopUpViewController = CommandPopUpController()
+                    let commandPopUpViewController = CommandPopUpUITableViewController()
                     commandPopUpViewController.modalPresentationStyle = .popover
                     commandPopUpViewController.preferredContentSize = CGSize(width: 200, height: 87)
                     
@@ -460,7 +444,7 @@ class ChatController: UICollectionViewController, NSFetchedResultsControllerDele
 }
 
 //MARK: -NetworkSessionDelegate
-extension ChatController: NetworkSessionDelegate {
+extension ChatLogUICollectionViewController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, received: SampleProtocol) {
         switch received.command {
             case CommandType.Create.rawValue:
@@ -562,20 +546,20 @@ extension ChatController: NetworkSessionDelegate {
 }
 
 //MARK: -CollectionViewDataSource
-extension ChatController {
+extension ChatLogUICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let message = self.fetchResultController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
         
         if message.isText {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: textCellReuseIdentifier, for: indexPath) as! TextCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: textCellReuseIdentifier, for: indexPath) as! TextMesageUICollectionViewCell
             cell.message = message
             cell.configureUI()
             
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellReuseIdentifier, for: indexPath) as! ImageCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellReuseIdentifier, for: indexPath) as! ImageMessageUICollectionViewCell
             cell.message = message
             cell.configureUI()
             
@@ -593,7 +577,7 @@ extension ChatController {
 }
 
 //MARK: -UICollectionViewDelegateFlowLayout
-extension ChatController: UICollectionViewDelegateFlowLayout {
+extension ChatLogUICollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 200
        
@@ -629,7 +613,7 @@ extension ChatController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: -Image Picker Delegate
-extension ChatController: UIImagePickerControllerDelegate {
+extension ChatLogUICollectionViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var message: MOMessage!
         let tempImage: UIImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
@@ -669,5 +653,28 @@ extension ChatController: UIImagePickerControllerDelegate {
         isEditingImage = false
         changingMessage = nil
         dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: -FetchResultController Delegate Methods
+extension ChatLogUICollectionViewController: NSFetchedResultsControllerDelegate{
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView.reloadData()
+        guard let fetchedObjects = controller.fetchedObjects, let last = fetchedObjects.last, let indexPath = controller.indexPath(forObject: last as! MOMessage) else {
+            return
+        }
+        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        collectionView.reloadData()
+    }
+}
+
+//MARK: -PopoverPresentationController Delegate Methods
+extension ChatLogUICollectionViewController: UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 import MultipeerConnectivity
 
-class NearbyUsersController: UIViewController {
+class NearbyUsersUIViewController: UIViewController {
     var peerID: MCPeerID!
     var browser: ChatBrowser!
     var session: NetworkSession!
@@ -48,7 +48,7 @@ class NearbyUsersController: UIViewController {
 }
 
 //MARK: -
-extension NearbyUsersController: ChatBrowserDelegate {
+extension NearbyUsersUIViewController: ChatBrowserDelegate {
     func sawPeers(_ browser: ChatBrowser, sawChats: [MCPeerID]) {
         nearbyDevices = sawChats
         tableView.reloadData()
@@ -57,7 +57,7 @@ extension NearbyUsersController: ChatBrowserDelegate {
 
 
 //MARK: -TableView DataSource Methods
-extension NearbyUsersController: UITableViewDataSource {
+extension NearbyUsersUIViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return nearbyDevices.count
     }
@@ -70,7 +70,7 @@ extension NearbyUsersController: UITableViewDataSource {
 }
 
 //MARK: -TableView Delegate Methods
-extension NearbyUsersController: UITableViewDelegate {
+extension NearbyUsersUIViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         session = browser.join(chat: nearbyDevices[indexPath.row])
@@ -79,7 +79,7 @@ extension NearbyUsersController: UITableViewDelegate {
 }
 
 //MARK: -NetworkSession Delegate Methods
-extension NearbyUsersController: NetworkSessionDelegate {
+extension NearbyUsersUIViewController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, inviteFrom peer: MCPeerID, complition: @escaping ((Bool) -> ())) {
         //
     }

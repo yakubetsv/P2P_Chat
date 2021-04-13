@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB042226260E22300076561C /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB042225260E22300076561C /* TextCell.swift */; };
-		CB39B62126242E1B00D7F4AC /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB39B62026242E1B00D7F4AC /* ImageCollectionViewCell.swift */; };
-		CB3C909B2610DB8000AACE3A /* NearbyUsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C909A2610DB8000AACE3A /* NearbyUsersController.swift */; };
+		CB042226260E22300076561C /* TextMesageUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB042225260E22300076561C /* TextMesageUICollectionViewCell.swift */; };
+		CB39B62126242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB39B62026242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift */; };
+		CB3C909B2610DB8000AACE3A /* NearbyUsersUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C909A2610DB8000AACE3A /* NearbyUsersUIViewController.swift */; };
 		CB3C90A12610E5A700AACE3A /* NearbyDevise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */; };
 		CB3C90A72610F61D00AACE3A /* ChatBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */; };
 		CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */; };
-		CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatController.swift */; };
+		CB5FEAF3260CA91F00871971 /* ChatLogUICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5FEAF2260CA91F00871971 /* ChatLogUICollectionViewController.swift */; };
 		CB75BF4A26244C36004C6EFA /* UIImage + resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75BF4926244C36004C6EFA /* UIImage + resize.swift */; };
 		CB99BD292615D09A0096C7AC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD282615D09A0096C7AC /* DataController.swift */; };
-		CB99BD3926171D230096C7AC /* CommandPopUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3826171D230096C7AC /* CommandPopUpController.swift */; };
+		CB99BD3926171D230096C7AC /* CommandPopUpUITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */; };
 		CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */; };
 		CB99BD4826172B310096C7AC /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99BD4726172B310096C7AC /* DataExtension.swift */; };
 		CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70B260A15B400B357D9 /* AppDelegate.swift */; };
 		CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */; };
-		CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* ViewController.swift */; };
+		CBEEC710260A15B400B357D9 /* RootUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */; };
 		CBEEC713260A15B400B357D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC711260A15B400B357D9 /* Main.storyboard */; };
 		CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBEEC714260A15B400B357D9 /* LemelLabsTest.xcdatamodeld */; };
 		CBEEC718260A15B600B357D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBEEC717260A15B600B357D9 /* Assets.xcassets */; };
@@ -48,22 +48,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CB042225260E22300076561C /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
-		CB39B62026242E1B00D7F4AC /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		CB3C909A2610DB8000AACE3A /* NearbyUsersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersController.swift; sourceTree = "<group>"; };
+		CB042225260E22300076561C /* TextMesageUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMesageUICollectionViewCell.swift; sourceTree = "<group>"; };
+		CB39B62026242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMessageUICollectionViewCell.swift; sourceTree = "<group>"; };
+		CB3C909A2610DB8000AACE3A /* NearbyUsersUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersUIViewController.swift; sourceTree = "<group>"; };
 		CB3C90A02610E5A700AACE3A /* NearbyDevise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyDevise.swift; sourceTree = "<group>"; };
 		CB3C90A62610F61D00AACE3A /* ChatBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBrowser.swift; sourceTree = "<group>"; };
 		CB3C90AB26112C1A00AACE3A /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
-		CB5FEAF2260CA91F00871971 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
+		CB5FEAF2260CA91F00871971 /* ChatLogUICollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogUICollectionViewController.swift; sourceTree = "<group>"; };
 		CB75BF4926244C36004C6EFA /* UIImage + resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + resize.swift"; sourceTree = "<group>"; };
 		CB99BD282615D09A0096C7AC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
-		CB99BD3826171D230096C7AC /* CommandPopUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPopUpController.swift; sourceTree = "<group>"; };
+		CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPopUpUITableViewController.swift; sourceTree = "<group>"; };
 		CB99BD3D2617297B0096C7AC /* SampleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleProtocol.swift; sourceTree = "<group>"; };
 		CB99BD4726172B310096C7AC /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		CBEEC708260A15B400B357D9 /* LemelLabsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemelLabsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBEEC70B260A15B400B357D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBEEC70D260A15B400B357D9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CBEEC70F260A15B400B357D9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootUIViewController.swift; sourceTree = "<group>"; };
 		CBEEC712260A15B400B357D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CBEEC715260A15B400B357D9 /* LemelLabsTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LemelLabsTest.xcdatamodel; sourceTree = "<group>"; };
 		CBEEC717260A15B600B357D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,8 +105,8 @@
 		CB042224260E21BB0076561C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CB042225260E22300076561C /* TextCell.swift */,
-				CB39B62026242E1B00D7F4AC /* ImageCollectionViewCell.swift */,
+				CB042225260E22300076561C /* TextMesageUICollectionViewCell.swift */,
+				CB39B62026242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -146,10 +146,10 @@
 		CBAA05AA260B582B009CDEB7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CBEEC70F260A15B400B357D9 /* ViewController.swift */,
-				CB5FEAF2260CA91F00871971 /* ChatController.swift */,
-				CB3C909A2610DB8000AACE3A /* NearbyUsersController.swift */,
-				CB99BD3826171D230096C7AC /* CommandPopUpController.swift */,
+				CBEEC70F260A15B400B357D9 /* RootUIViewController.swift */,
+				CB5FEAF2260CA91F00871971 /* ChatLogUICollectionViewController.swift */,
+				CB3C909A2610DB8000AACE3A /* NearbyUsersUIViewController.swift */,
+				CB99BD3826171D230096C7AC /* CommandPopUpUITableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -357,14 +357,14 @@
 				CB99BD3E2617297B0096C7AC /* SampleProtocol.swift in Sources */,
 				CB99BD292615D09A0096C7AC /* DataController.swift in Sources */,
 				CB99BD4826172B310096C7AC /* DataExtension.swift in Sources */,
-				CB99BD3926171D230096C7AC /* CommandPopUpController.swift in Sources */,
-				CBEEC710260A15B400B357D9 /* ViewController.swift in Sources */,
-				CB39B62126242E1B00D7F4AC /* ImageCollectionViewCell.swift in Sources */,
+				CB99BD3926171D230096C7AC /* CommandPopUpUITableViewController.swift in Sources */,
+				CBEEC710260A15B400B357D9 /* RootUIViewController.swift in Sources */,
+				CB39B62126242E1B00D7F4AC /* ImageMessageUICollectionViewCell.swift in Sources */,
 				CBEEC70C260A15B400B357D9 /* AppDelegate.swift in Sources */,
 				CBEEC70E260A15B400B357D9 /* SceneDelegate.swift in Sources */,
-				CB5FEAF3260CA91F00871971 /* ChatController.swift in Sources */,
-				CB042226260E22300076561C /* TextCell.swift in Sources */,
-				CB3C909B2610DB8000AACE3A /* NearbyUsersController.swift in Sources */,
+				CB5FEAF3260CA91F00871971 /* ChatLogUICollectionViewController.swift in Sources */,
+				CB042226260E22300076561C /* TextMesageUICollectionViewCell.swift in Sources */,
+				CB3C909B2610DB8000AACE3A /* NearbyUsersUIViewController.swift in Sources */,
 				CBEEC716260A15B400B357D9 /* LemelLabsTest.xcdatamodeld in Sources */,
 				CB3C90AC26112C1A00AACE3A /* NetworkSession.swift in Sources */,
 				CB3C90A12610E5A700AACE3A /* NearbyDevise.swift in Sources */,

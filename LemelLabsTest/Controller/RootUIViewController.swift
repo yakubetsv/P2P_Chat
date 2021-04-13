@@ -9,7 +9,7 @@ import UIKit
 import MultipeerConnectivity
 import CoreData
 
-class ViewController: UIViewController {
+class RootUIViewController: UIViewController {
     var user: MOUser?
     
     let dataController: DataController = {
@@ -95,12 +95,12 @@ class ViewController: UIViewController {
     }
     
     @objc func joinHost() {
-        let nearbyDevicesVC = NearbyUsersController()
+        let nearbyDevicesVC = NearbyUsersUIViewController()
         nearbyDevicesVC.modalPresentationStyle = .currentContext
         nearbyDevicesVC.peerID = peerID
         nearbyDevicesVC.complition = { (session: NetworkSession) in
             DispatchQueue.main.async {
-                let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+                let chatVC = ChatLogUICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
                 chatVC.session = session
                 chatVC.user = self.user
                 chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
@@ -129,7 +129,7 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController: NetworkSessionDelegate {
+extension RootUIViewController: NetworkSessionDelegate {
     func networkSession(_ session: NetworkSession, received: SampleProtocol) {
         //
     }
@@ -161,7 +161,7 @@ extension ViewController: NetworkSessionDelegate {
         
         
         DispatchQueue.main.async {
-            let chatVC = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+            let chatVC = ChatLogUICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
             chatVC.session = session
             chatVC.user = self.user
             chatVC.companionUser = self.fetchUser(peerID: session.companionPeerID)
